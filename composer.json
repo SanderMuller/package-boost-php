@@ -1,0 +1,86 @@
+{
+    "name": "sandermuller/package-boost-php",
+    "description": "AI agent skills for framework-agnostic Composer package authors. Pairs with sandermuller/boost-core for sync to nine AI agents.",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "keywords": [
+        "sandermuller",
+        "package-boost",
+        "ai",
+        "claude",
+        "cursor",
+        "composer",
+        "package-development",
+        "developer-tools"
+    ],
+    "homepage": "https://github.com/sandermuller/package-boost-php",
+    "authors": [
+        {
+            "name": "Sander Muller",
+            "email": "github@scode.nl",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "composer-plugin-api": "^2.6",
+        "sandermuller/boost-core": "^1.0@dev",
+        "stolt/lean-package-validator": "^5.7",
+        "symfony/console": "^7.0",
+        "symfony/process": "^7.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.6",
+        "laravel/pint": "^1.29",
+        "pestphp/pest": "^4.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SanderMuller\\PackageBoostPhp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SanderMuller\\PackageBoostPhp\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin",
+        "boost": {
+            "skills": "resources/boost/skills",
+            "guidelines": "resources/boost/guidelines"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "stan": "vendor/bin/phpstan analyse --memory-limit=2G",
+        "fmt": "vendor/bin/pint",
+        "fmt:check": "vendor/bin/pint --test",
+        "ci": [
+            "@fmt:check",
+            "@stan",
+            "@test"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/composer": true,
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true,
+            "sandermuller/boost-core": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../boost-core",
+            "options": { "symlink": true }
+        }
+    ]
+}
