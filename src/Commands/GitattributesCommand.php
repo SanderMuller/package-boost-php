@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SanderMuller\PackageBoostPhp\Commands;
 
-use Composer\Command\BaseCommand;
+use SanderMuller\BoostCore\Commands\BoostBaseCommand;
 use SanderMuller\PackageBoostPhp\Gitattributes\ManagedBlockWriter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +21,7 @@ use Throwable;
  * (and any other tool) append additional export-ignore entries inside the
  * same managed block — foreign lines are preserved across syncs.
  */
-final class GitattributesCommand extends BaseCommand
+final class GitattributesCommand extends BoostBaseCommand
 {
     public function __construct(
         private readonly ManagedBlockWriter $writer = new ManagedBlockWriter,
@@ -39,28 +39,14 @@ final class GitattributesCommand extends BaseCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Report drift without writing. Non-zero exit if the file would change.',
-            )
-            ->addOption(
-                'working-dir',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Project root. Defaults to current working directory.',
             );
+        $this->addWorkingDirOption();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
-        $workingDir = $input->getOption('working-dir');
-        if (is_string($workingDir)) {
-            $projectRoot = $workingDir;
-        } else {
-            $cwd = getcwd();
-            $projectRoot = $cwd === false ? '.' : $cwd;
-        }
-
-        $projectRoot = rtrim($projectRoot, '/');
+        $projectRoot = $this->resolveProjectRoot($input);
         $path = $projectRoot.'/.gitattributes';
 
         $checkOnly = (bool) $input->getOption('check');

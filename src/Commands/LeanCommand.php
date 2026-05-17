@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace SanderMuller\PackageBoostPhp\Commands;
 
-use Composer\Command\BaseCommand;
+use SanderMuller\BoostCore\Commands\BoostBaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
@@ -18,34 +17,20 @@ use Symfony\Component\Process\Process;
  * Delegates to `vendor/bin/lean-package-validator validate`. Thin wrapper
  * that finds the binary, runs it, surfaces exit code via SymfonyStyle.
  */
-final class LeanCommand extends BaseCommand
+final class LeanCommand extends BoostBaseCommand
 {
     protected function configure(): void
     {
         $this
             ->setName('package-boost-php:lean')
-            ->setDescription('Validate .gitattributes excludes non-shipping paths from the published archive.')
-            ->addOption(
-                'working-dir',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Project root. Defaults to current working directory.',
-            );
+            ->setDescription('Validate .gitattributes excludes non-shipping paths from the published archive.');
+        $this->addWorkingDirOption();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
-        $workingDir = $input->getOption('working-dir');
-        if (is_string($workingDir)) {
-            $projectRoot = $workingDir;
-        } else {
-            $cwd = getcwd();
-            $projectRoot = $cwd === false ? '.' : $cwd;
-        }
-
-        $projectRoot = rtrim($projectRoot, '/');
+        $projectRoot = $this->resolveProjectRoot($input);
         $binary = $this->locateValidatorBinary($projectRoot);
 
         if ($binary === null) {
