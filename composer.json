@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "composer-plugin-api": "^2.6",
         "sandermuller/boost-core": "^1.0@dev",
         "stolt/lean-package-validator": "^5.7",
@@ -77,13 +77,6 @@
             "sandermuller/boost-core": true
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../boost-core",
-            "options": { "symlink": true }
-        }
-    ]
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
