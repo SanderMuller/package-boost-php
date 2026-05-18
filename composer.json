@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.3",
         "composer-plugin-api": "^2.6",
-        "sandermuller/boost-core": "^0.3.0",
+        "sandermuller/boost-core": "^0.3",
         "stolt/lean-package-validator": "^5.7",
         "symfony/console": "^7.0",
         "symfony/process": "^7.0"
@@ -50,14 +50,16 @@
     "extra": {
         "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin",
         "branch-alias": {
-            "dev-main": "0.x-dev"
-        },
-        "boost": {
-            "skills": "resources/boost/skills",
-            "guidelines": "resources/boost/guidelines"
+            "dev-main": "0.3.x-dev"
         }
     },
     "scripts": {
+        "post-install-cmd": [
+            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
+        ],
+        "post-update-cmd": [
+            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
+        ],
         "test": "vendor/bin/pest",
         "stan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "fmt": "vendor/bin/pint",
@@ -66,7 +68,8 @@
         "ci": [
             "@fmt:check",
             "@stan",
-            "@test"
+            "@test",
+            "@validate-gitattributes"
         ]
     },
     "config": {
