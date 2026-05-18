@@ -5,7 +5,7 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.3.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.3.1...HEAD)
 
 ## [0.3.1]
 
@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bumped `sandermuller/boost-core` constraint floor to `^0.3.2`. 0.3.2 adds `BOOST_SKIP_AUTOSYNC` env-var support to `BoostAutoSync::run` (the script callback wired into our `post-install-cmd` / `post-update-cmd` hooks).
 - README: restored the `Set BOOST_SKIP_AUTOSYNC=1 to disable` line. It was dropped in 0.3.0 because our hook didn't honor the env var — 0.3.2 fixes that, so the documented disable knob is accurate again.
+
+## [0.3.1](https://github.com/sandermuller/package-boost-php/compare/0.3.0...0.3.1) - 2026-05-18
+
+### Changed
+
+- Bumped `sandermuller/boost-core` constraint floor to `^0.3.2`. 0.3.2 adds `BOOST_SKIP_AUTOSYNC` env-var support to `BoostAutoSync::run` — the script callback our `post-install-cmd` / `post-update-cmd` hooks invoke.
+- README: restored the `Set BOOST_SKIP_AUTOSYNC=1 to disable` line. It was dropped in 0.3.0 because our hook didn't honor the env var; 0.3.2 fixes that upstream, so the documented disable knob is accurate again.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.3.0...0.3.1
 
 ## [0.3.0](https://github.com/sandermuller/package-boost-php/compare/0.2.0...0.3.0) - 2026-05-18
 
