@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.3",
         "composer-plugin-api": "^2.6",
-        "sandermuller/boost-core": "^1.0@dev",
+        "sandermuller/boost-core": "^0.1.0",
         "stolt/lean-package-validator": "^5.7",
         "symfony/console": "^7.0",
         "symfony/process": "^7.0"
