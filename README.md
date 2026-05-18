@@ -1,26 +1,34 @@
 # package-boost-php
 
-> AI agent skills for framework-agnostic Composer package authors.
+> AI agent skills for framework-agnostic Composer package authors. Ships five package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`) plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
 
-Depends on [`sandermuller/boost-core`](https://github.com/sandermuller/boost-core) for the actual sync mechanism. This package ships:
+## Install
 
-- 5 skills targeting Composer package authoring: `readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`
-- `package-boost-php:lean` — validates `.gitattributes` excludes non-shipping paths from the published archive
-- `package-boost-php:gitattributes` — maintains the `# >>> package-boost (managed) >>>` block in `.gitattributes` (preserves foreign lines added by other tools like [`repo-init`](https://github.com/sandermuller/repo-init))
+Not yet on Packagist. While you wait, install via a vcs repository:
 
-## Status
-
-**Under construction.** `boost-core` is not yet on Packagist — this package currently resolves it via a path repository pointing at `../boost-core/`. Will switch to Packagist constraint once `boost-core` ships.
-
-## Installation
-
-Coming soon:
+```json
+{
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/sandermuller/package-boost-php" }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
+```
 
 ```bash
 composer require --dev sandermuller/package-boost-php
-composer boost:init
-composer boost:install   # interactive picker for agents + allowlist
-composer boost:sync      # fan out to selected agents
+```
+
+## Usage
+
+```bash
+composer boost:init      # generate boost.php starter (from boost-core)
+composer boost:install   # interactive picker: agents + vendor allowlist
+composer boost:sync      # fan out skills + guidelines to selected agents
+
+composer package-boost-php:lean            # validate .gitattributes
+composer package-boost-php:gitattributes   # sync the managed block
 ```
 
 ## License
