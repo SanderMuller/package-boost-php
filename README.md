@@ -36,6 +36,8 @@ composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
 ```
 
+Generated agent dirs are added to `.gitignore` automatically and regenerated on every `composer install` — edit `.ai/` only. Set `BOOST_SKIP_AUTOSYNC=1` to disable.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
