@@ -6,6 +6,7 @@ namespace SanderMuller\PackageBoostPhp;
 
 use Composer\Command\BaseCommand;
 use Composer\Plugin\Capability\CommandProvider;
+use SanderMuller\BoostCore\Commands\BaseCommandAdapter;
 use SanderMuller\PackageBoostPhp\Commands\GitattributesCommand;
 use SanderMuller\PackageBoostPhp\Commands\LeanCommand;
 
@@ -17,8 +18,8 @@ final class PackageBoostPhpCommandProvider implements CommandProvider
     public function getCommands(): array
     {
         return [
-            new LeanCommand,
-            new GitattributesCommand,
+            new BaseCommandAdapter(new LeanCommand),
+            new BaseCommandAdapter(new GitattributesCommand),
         ];
     }
 }
