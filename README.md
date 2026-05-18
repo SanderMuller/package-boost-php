@@ -9,18 +9,6 @@
 
 ## Install
 
-Not yet on Packagist. While you wait, install via a vcs repository:
-
-```json
-{
-    "repositories": [
-        { "type": "vcs", "url": "https://github.com/sandermuller/package-boost-php" }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true
-}
-```
-
 ```bash
 composer require --dev sandermuller/package-boost-php
 ```
