@@ -30,7 +30,7 @@ composer require --dev sandermuller/package-boost-php
 ```bash
 composer boost:init      # generate boost.php starter (from boost-core)
 composer boost:install   # interactive picker: agents + vendor allowlist
-composer boost:sync      # fan out skills + guidelines to selected agents
+vendor/bin/boost sync      # fan out skills + guidelines to selected agents
 
 composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
