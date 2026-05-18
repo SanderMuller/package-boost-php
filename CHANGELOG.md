@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped `sandermuller/boost-core` constraint to `^0.3.0`. 0.3.0 removes `composer boost:init` — auto-rolled into `composer boost:install` first-run path. Plugin code paths untouched.
+- README: replaced `composer boost:init` reference with the unified `composer boost:install` flow.
+
 ## [0.2.0] - 2026-05-18
 
 ### Fixed

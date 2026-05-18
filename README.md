@@ -16,8 +16,7 @@ composer require --dev sandermuller/package-boost-php
 ## Usage
 
 ```bash
-composer boost:init      # generate boost.php starter (from boost-core)
-composer boost:install   # interactive picker: agents + vendor allowlist
+composer boost:install   # interactive picker: agents + vendor allowlist (auto-generates boost.php on first run)
 vendor/bin/boost sync      # fan out skills + guidelines to selected agents
 
 composer package-boost-php:lean            # validate .gitattributes
