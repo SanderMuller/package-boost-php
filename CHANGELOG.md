@@ -5,7 +5,7 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.3.0...HEAD)
 
 ## [0.3.0]
 
@@ -30,7 +30,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **0.1.0 and 0.1.1 are broken — use 0.2.0+.** Those tags shipped `PackageBoostPhpCommandProvider::getCommands()` returning plain Symfony commands without `BaseCommandAdapter` wrapping. Any consumer pinning 0.1.0 / 0.1.1 hits a `"Plugin capability returned an invalid value"` Composer error on every invocation. 0.2.0 wired the `BoostCore\BaseCommandAdapter` wrap and is the lowest correctly-functioning tag.
 
-## [0.2.0] - 2026-05-18
+## [0.3.0](https://github.com/sandermuller/package-boost-php/compare/0.2.0...0.3.0) - 2026-05-18
+
+### Fixed
+
+- Cross-platform Composer `post-install-cmd` / `post-update-cmd` hook. Replaced the bash `if [ … ] then vendor/bin/boost sync … fi` one-liner with `SanderMuller\BoostCore\Scripts\BoostAutoSync::run` (boost-core 0.3.1+). The bash form broke on Windows `cmd.exe`; the PHP callback works everywhere Composer does.
+
+### Changed
+
+- Bumped `sandermuller/boost-core` constraint to `^0.3` — resolves to 0.3.1 today, picks up future 0.3.x patches.
+- Bumped `extra.branch-alias.dev-main` to `0.3.x-dev` (was `0.x-dev`) to align with the boost-core 0.3.x version stream.
+- README: `composer boost:init` reference dropped (auto-rolled into `composer boost:install` in boost-core 0.3.0). Tests badge URL fixed (was pointing at the deleted `ci.yml`).
+- Split monolithic `ci.yml` into canonical per-tool workflows (`phpstan`, `pint-check`, `run-tests`, `update-changelog`). Adds a `prefer-lowest` matrix lane to catch accidental floor-tightening.
+- Dropped redundant `extra.boost.skills` / `extra.boost.guidelines` entries — they restated boost-core's `VendorScanner` defaults.
+
+### Added
+
+- `boost.php` tracked at project root: configures agent fan-out + vendor allowlist for `vendor/bin/boost sync`. Fresh clones + CI now reproduce the same boost-core config.
+- `.lpv` config + `validate-gitattributes` Composer script, wired into `composer ci`.
+- Canonical config files: `.editorconfig`, `pint.json`, `.github/dependabot.yml`.
+
+### Important
+
+**0.1.0 and 0.1.1 are broken — use 0.2.0+.** Those tags shipped `PackageBoostPhpCommandProvider::getCommands()` returning plain Symfony commands without `BaseCommandAdapter` wrapping, causing a `"Plugin capability returned an invalid value"` Composer error in every consumer. 0.2.0 wired the adapter and is the lowest correctly-functioning tag.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.2.0...0.3.0
+
+## [0.2.0](https://github.com/sandermuller/package-boost-php/compare/0.1.1...0.2.0) - 2026-05-18
 
 ### Fixed
 
@@ -50,6 +76,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `package-boost-php:lean` Composer command — validates `.gitattributes` via `stolt/lean-package-validator`.
 - `package-boost-php:gitattributes` Composer command — maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines per the repo-init contract.
 - Depends on `sandermuller/boost-core` (currently resolved via path repository — switches to Packagist constraint once boost-core is published).
-
-[Unreleased]: https://github.com/sandermuller/package-boost-php/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/sandermuller/package-boost-php/compare/0.1.1...0.2.0
