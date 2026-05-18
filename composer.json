@@ -50,7 +50,7 @@
     "extra": {
         "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin",
         "branch-alias": {
-            "dev-main": "1.x-dev"
+            "dev-main": "0.x-dev"
         },
         "boost": {
             "skills": "resources/boost/skills",
@@ -62,6 +62,7 @@
         "stan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "fmt": "vendor/bin/pint",
         "fmt:check": "vendor/bin/pint --test",
+        "validate-gitattributes": "vendor/bin/lean-package-validator validate",
         "ci": [
             "@fmt:check",
             "@stan",

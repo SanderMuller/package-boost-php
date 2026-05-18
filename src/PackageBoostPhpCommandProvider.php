@@ -18,8 +18,8 @@ final class PackageBoostPhpCommandProvider implements CommandProvider
     public function getCommands(): array
     {
         return [
-            new BaseCommandAdapter(new LeanCommand),
-            new BaseCommandAdapter(new GitattributesCommand),
+            new BaseCommandAdapter(new LeanCommand()),
+            new BaseCommandAdapter(new GitattributesCommand()),
         ];
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use SanderMuller\PackageBoostPhp\Gitattributes\ManagedBlockWriter;
 
 it('appends a new block when none exists', function (): void {
-    $writer = new ManagedBlockWriter;
+    $writer = new ManagedBlockWriter();
     $result = $writer->sync('');
 
     expect($result)->toContain('# >>> package-boost (managed) >>>');
@@ -16,7 +16,7 @@ it('appends a new block when none exists', function (): void {
 
 it('appends a new block to an existing .gitattributes with user content', function (): void {
     $original = "*.php text=auto eol=lf\n*.css diff=css\n";
-    $result = (new ManagedBlockWriter)->sync($original);
+    $result = (new ManagedBlockWriter())->sync($original);
 
     expect($result)->toContain('*.php text=auto eol=lf');
     expect($result)->toContain('# >>> package-boost (managed) >>>');
@@ -41,7 +41,7 @@ CLAUDE.md               export-ignore
 
 TXT;
 
-    $result = (new ManagedBlockWriter)->sync($original);
+    $result = (new ManagedBlockWriter())->sync($original);
 
     // Foreign lines preserved
     expect($result)->toContain('/.lpv                   export-ignore');
@@ -54,7 +54,7 @@ TXT;
 });
 
 it('does not duplicate canonical lines on re-sync', function (): void {
-    $writer = new ManagedBlockWriter;
+    $writer = new ManagedBlockWriter();
     $first = $writer->sync('');
     $second = $writer->sync($first);
 
@@ -75,7 +75,7 @@ it('leaves content outside the block untouched', function (): void {
 *.bin binary
 TXT;
 
-    $result = (new ManagedBlockWriter)->sync($original);
+    $result = (new ManagedBlockWriter())->sync($original);
 
     expect($result)->toContain('# Header');
     expect($result)->toContain('*.php text=auto eol=lf');
@@ -85,7 +85,7 @@ TXT;
 
 it('treats malformed blocks (open without close) as no-block and appends fresh', function (): void {
     $original = "# >>> package-boost (managed) >>>\n.ai/ export-ignore\n";
-    $result = (new ManagedBlockWriter)->sync($original);
+    $result = (new ManagedBlockWriter())->sync($original);
 
     // Original (malformed) preserved, fresh block appended
     expect($result)->toContain('# >>> package-boost (managed) >>>');

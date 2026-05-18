@@ -24,7 +24,7 @@ use Throwable;
 final class GitattributesCommand extends BoostBaseCommand
 {
     public function __construct(
-        private readonly ManagedBlockWriter $writer = new ManagedBlockWriter,
+        private readonly ManagedBlockWriter $writer = new ManagedBlockWriter(),
     ) {
         parent::__construct();
     }
@@ -47,7 +47,7 @@ final class GitattributesCommand extends BoostBaseCommand
     {
         $io = new SymfonyStyle($input, $output);
         $projectRoot = $this->resolveProjectRoot($input);
-        $path = $projectRoot.'/.gitattributes';
+        $path = $projectRoot . '/.gitattributes';
 
         $checkOnly = (bool) $input->getOption('check');
 
@@ -55,7 +55,7 @@ final class GitattributesCommand extends BoostBaseCommand
             $original = is_file($path) ? (string) file_get_contents($path) : '';
             $updated = $this->writer->sync($original);
         } catch (Throwable $e) {
-            $io->error('Failed to sync .gitattributes: '.$e->getMessage());
+            $io->error('Failed to sync .gitattributes: ' . $e->getMessage());
 
             return self::FAILURE;
         }

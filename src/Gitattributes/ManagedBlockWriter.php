@@ -65,7 +65,7 @@ final class ManagedBlockWriter
             $original .= "\n";
         }
 
-        return $original.$block;
+        return $original . $block;
     }
 
     private function rewriteExistingBlock(string $original): string
@@ -96,9 +96,9 @@ final class ManagedBlockWriter
         $before = implode("\n", array_slice($lines, 0, $startIdx));
         $after = implode("\n", array_slice($lines, $endIdx + 1));
 
-        $rebuilt = ($before === '' ? '' : $before."\n")
-            .$newBlock
-            .($after === '' ? '' : "\n".$after);
+        $rebuilt = ($before === '' ? '' : $before . "\n")
+            . $newBlock
+            . ($after === '' ? '' : "\n" . $after);
 
         return $rebuilt;
     }
@@ -138,6 +138,6 @@ final class ManagedBlockWriter
         }
         $lines[] = self::BLOCK_END;
 
-        return implode("\n", $lines)."\n";
+        return implode("\n", $lines) . "\n";
     }
 }

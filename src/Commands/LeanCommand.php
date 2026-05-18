@@ -58,8 +58,8 @@ final class LeanCommand extends BoostBaseCommand
     private function locateValidatorBinary(string $projectRoot): ?string
     {
         $candidates = [
-            $projectRoot.'/vendor/bin/lean-package-validator',
-            __DIR__.'/../../vendor/bin/lean-package-validator',
+            $projectRoot . '/vendor/bin/lean-package-validator',
+            __DIR__ . '/../../vendor/bin/lean-package-validator',
         ];
 
         foreach ($candidates as $candidate) {
