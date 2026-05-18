@@ -7,28 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.3.0...HEAD)
 
-## [0.3.0]
-
-### Added
-
-- `boost.php` tracked at project root: configures boost-core's agent fan-out + vendor allowlist for `vendor/bin/boost sync`.
-- Composer `post-install-cmd` / `post-update-cmd` hooks wired to `SanderMuller\BoostCore\Scripts\BoostAutoSync::run` (boost-core 0.3.1+). Cross-platform replacement for the prior bash one-liner — auto-syncs `.ai/` to per-agent dirs on every `composer install` / `composer update` in dev mode.
-- `validate-gitattributes` Composer script + `.lpv` config so `lean-package-validator` runs as part of `composer ci`.
-- Canonical config files: `.editorconfig`, `pint.json`, `.github/dependabot.yml`.
-- Shared GitHub workflows: `phpstan.yml`, `pint-check.yml`, `run-tests.yml` (PHP 8.3 prefer-lowest + 8.3/8.4 prefer-stable matrix), `update-changelog.yml`.
+## [0.3.1]
 
 ### Changed
 
-- Bumped `sandermuller/boost-core` constraint to `^0.3` (resolves to 0.3.1, picks up future 0.3.x patches).
-- Bumped `extra.branch-alias.dev-main` to `0.3.x-dev` to align with the boost-core ecosystem's 0.3.x stream (per family-wide version-stream policy: stay on 0.x until 0.4 absorbs manifest cleanup; 1.0 reserved for FileEmitter-stable).
-- README: replaced `composer boost:init` reference with the unified `composer boost:install` flow (0.3.0 auto-rolls init into install's first-run path).
-- Replaced monolithic `ci.yml` workflow with the canonical per-tool split (phpstan / pint / tests / changelog).
-- Dropped redundant `extra.boost.skills` / `extra.boost.guidelines` entries — they restated boost-core's `VendorScanner` defaults.
-- `.ai/skills/ai-guidelines` and `.ai/skills/pre-release` rewritten to reflect boost-core (Composer plugin) reality — swapped stale `vendor/bin/testbench` references for `vendor/bin/boost sync`, noted gitignored per-agent dirs, mentioned the auto-sync hook.
-
-### Important
-
-- **0.1.0 and 0.1.1 are broken — use 0.2.0+.** Those tags shipped `PackageBoostPhpCommandProvider::getCommands()` returning plain Symfony commands without `BaseCommandAdapter` wrapping. Any consumer pinning 0.1.0 / 0.1.1 hits a `"Plugin capability returned an invalid value"` Composer error on every invocation. 0.2.0 wired the `BoostCore\BaseCommandAdapter` wrap and is the lowest correctly-functioning tag.
+- Bumped `sandermuller/boost-core` constraint floor to `^0.3.2`. 0.3.2 adds `BOOST_SKIP_AUTOSYNC` env-var support to `BoostAutoSync::run` (the script callback wired into our `post-install-cmd` / `post-update-cmd` hooks).
+- README: restored the `Set BOOST_SKIP_AUTOSYNC=1 to disable` line. It was dropped in 0.3.0 because our hook didn't honor the env var — 0.3.2 fixes that, so the documented disable knob is accurate again.
 
 ## [0.3.0](https://github.com/sandermuller/package-boost-php/compare/0.2.0...0.3.0) - 2026-05-18
 
