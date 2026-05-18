@@ -31,6 +31,13 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
+      - name: Wire sibling checkout as path repository
+        working-directory: package-boost-php
+        run: |
+          composer config repositories.boost-core path ../boost-core
+          composer config minimum-stability dev
+          composer config prefer-stable true
+
       - name: Install dependencies
         working-directory: package-boost-php
         run: composer install --prefer-dist --no-progress
