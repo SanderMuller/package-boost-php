@@ -5,7 +5,22 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.3.1...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.4.0...HEAD)
+
+## [0.4.0](https://github.com/sandermuller/package-boost-php/compare/0.3.1...0.4.0) - 2026-05-20
+
+### boost-core 0.4 family alignment
+
+Tracks the boost-core 0.4.x version stream. No breaking changes for package-boost-php consumers — boost-core 0.4.0's breaking change (vendor-namespaced user-scope skill dirs) is scoped to user-scope sync; package-boost-php uses project-scope sync via the `BoostAutoSync` post-install hook.
+
+#### Changed
+
+- Bumped `sandermuller/boost-core` constraint to `^0.4`. boost-core 0.4.0 vendor-namespaces user-scope skill directories (`~/.{agent}/skills/<vendor>__<package>/`); the migration is automatic on first sync. package-boost-php has no direct `SyncEngine` callers and no hard-coded user-scope skill paths, so the bump is transparent.
+- Bumped `extra.branch-alias.dev-main` to `0.4.x-dev`.
+- Composer `post-install-cmd` / `post-update-cmd` hooks switched to `BoostAutoSync::runWithSummary` — emits boost-core's one-line sync summary through Composer IO instead of running silently.
+- `phpstan` CI workflow now also triggers on `composer.json` / `composer.lock` changes, so a dependency bump that shifts phpstan's verdict re-runs static analysis on the bump commit.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.3.1...0.4.0
 
 ## [0.3.1](https://github.com/sandermuller/package-boost-php/compare/0.3.0...0.3.1) - 2026-05-18
 
