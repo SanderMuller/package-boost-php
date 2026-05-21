@@ -48,10 +48,7 @@
         }
     },
     "extra": {
-        "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin",
-        "branch-alias": {
-            "dev-main": "0.5.x-dev"
-        }
+        "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin"
     },
     "scripts": {
         "post-install-cmd": [
