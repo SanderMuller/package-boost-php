@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.3",
         "composer-plugin-api": "^2.6",
-        "sandermuller/boost-core": "^0.4",
+        "sandermuller/boost-core": "^0.5",
         "stolt/lean-package-validator": "^5.7",
         "symfony/console": "^7.0",
         "symfony/process": "^7.0"
@@ -50,7 +50,7 @@
     "extra": {
         "class": "SanderMuller\\PackageBoostPhp\\PackageBoostPhpPlugin",
         "branch-alias": {
-            "dev-main": "0.4.x-dev"
+            "dev-main": "0.5.x-dev"
         }
     },
     "scripts": {

@@ -92,4 +92,3 @@ emitters never instantiate.
 
 - `SanderMuller\BoostCore\Sync\SyncContext` for what's available on `$ctx`
 - `package-boost-laravel`'s `McpJsonEmitter` for a real working example
-- The architecture plan's "FileEmitter contract" section for the design rationale

@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/sandermuller/package-boost-php.svg?style=flat-square)](https://packagist.org/packages/sandermuller/package-boost-php)
 [![License](https://img.shields.io/packagist/l/sandermuller/package-boost-php.svg?style=flat-square)](LICENSE)
 
-> AI agent skills for framework-agnostic Composer package authors. Ships five package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`) plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
+> AI agent skills for framework-agnostic Composer package authors. Ships six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`) plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
 
 ## Install
 
