@@ -1,6 +1,6 @@
 ---
 name: skill-authoring
-description: Write boost-core skill files — frontmatter shape, collision guards, source-dir selection, body content.
+description: Write boost-core skill files — frontmatter shape, skill tags, collision guards, source-dir selection, body content.
 ---
 
 # Skill authoring
@@ -15,14 +15,45 @@ description: Write boost-core skill files — frontmatter shape, collision guard
 ## Frontmatter shape
 
 Required:
-- `name` — kebab-case slug. Must match filename (without `.md`) unless
+- `name` — kebab-case slug. Must match the filename (without `.md`) unless
   overridden explicitly.
-- `description` — single-sentence summary. Used by AI agents to decide
-  when to load the skill.
+- `description` — single-sentence summary. AI agents read this to decide
+  when to load the skill, so make it specific.
 
-Optional (loose v1 schema per architecture plan — pass-through):
-- `triggers` — keywords/phrases that hint applicability
-- `version` — for skills with breaking changes between versions
+Optional:
+- `metadata` — a string→string map; the Agent Skills standard's sanctioned
+  extension point for client-specific data. `boost-core` reads one key
+  here, `boost-tags` (see below). Other `metadata` keys and any
+  non-standard top-level fields pass through untouched (loose v1 schema),
+  but no agent acts on them — don't add frontmatter nothing reads.
+
+### Tagging a skill — `metadata.boost-tags`
+
+Tag a skill so a consuming project receives it only when that project opts
+in. Tags are a single space-delimited string under `metadata.boost-tags`:
+
+```yaml
+---
+name: jira-triage
+description: Triage and label incoming Jira issues.
+metadata:
+  boost-tags: "php jira"
+---
+```
+
+- Tags are normalized (lowercased, trimmed) on both sides before matching.
+- A vendor skill ships to a project only when **every** tag it declares is
+  among the project's `withTags()` in `boost.php` — `skillTags ⊆ projectTags`.
+- An **untagged** skill ships everywhere — tagging is opt-in and additive,
+  so introducing the field breaks nothing on its own.
+- A **malformed** `boost-tags` (not a string) fails closed: the skill ships
+  nowhere, rather than silently degrading to untagged.
+- Consumers discover which tags exist with `composer boost:tags`.
+
+> **Tagging an already-shipped skill is consumer-breaking.** Every project
+> that has not declared the new tag stops receiving the skill on its next
+> sync. Tag a skill from the start, or treat adding a tag as a breaking
+> change for the package — a loud release-note callout, not a quiet tweak.
 
 ## Source dir selection
 
