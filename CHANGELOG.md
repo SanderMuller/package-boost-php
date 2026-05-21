@@ -5,7 +5,17 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.4.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.5.0...HEAD)
+
+## [0.5.0](https://github.com/sandermuller/package-boost-php/compare/0.4.0...0.5.0) - 2026-05-21
+
+### Added
+
+- New shipped skill `writing-file-emitter` — guides Composer package authors through implementing a boost-core `FileEmitter` to emit a custom file (e.g. `.mcp.json`, `.editorconfig`) into the host project during `boost:sync`. Sixth package-author skill, alongside `readme`, `release-notes`, `upgrading`, `lean-dist`, and `skill-authoring`. `package-boost-laravel` consumers receive it transitively.
+
+### Changed
+
+- Bumped `sandermuller/boost-core` constraint to `^0.5`. boost-core 0.5.0 adds tag-based conditional skill filtering — `metadata.boost-tags` in `SKILL.md`, `withTags()` / `withExcludedSkills()` in `boost.php`, and a `boost:doctor` tag report. A caret on `0.x` stops at the minor, so `^0.4` could not resolve `0.5.x` and consumers were held below it; `^0.5` covers the whole 0.5.x line — 0.5.0 today and the upcoming additive 0.5.1.
 
 ## [0.4.0](https://github.com/sandermuller/package-boost-php/compare/0.3.1...0.4.0) - 2026-05-20
 
