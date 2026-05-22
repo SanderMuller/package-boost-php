@@ -1,6 +1,8 @@
 ---
 name: skill-authoring
 description: Write boost-core skill files — frontmatter shape, skill tags, collision guards, source-dir selection, body content.
+metadata:
+  boost-tags: "boost-extension"
 ---
 
 # Skill authoring

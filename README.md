@@ -23,6 +23,8 @@ composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
 ```
 
+Two skills are opt-in: `skill-authoring` and `writing-file-emitter` carry the `boost-extension` tag and sync only to projects whose `boost.php` declares `->withTags(['boost-extension'])`. The other four skills and the foundation guideline ship to every consumer.
+
 Generated agent dirs are added to `.gitignore` automatically and regenerated on every `composer install` — edit `.ai/` only. Set `BOOST_SKIP_AUTOSYNC=1` to disable.
 
 ## License

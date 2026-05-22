@@ -1,6 +1,8 @@
 ---
 name: writing-file-emitter
 description: Implement a FileEmitter for boost-core to emit a custom file (e.g. .mcp.json, .editorconfig) into the host project during boost:sync.
+metadata:
+  boost-tags: "boost-extension"
 ---
 
 # Writing a FileEmitter
