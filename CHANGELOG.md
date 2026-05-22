@@ -5,7 +5,31 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.5.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.6.0...HEAD)
+
+## [0.6.0](https://github.com/sandermuller/package-boost-php/compare/0.5.0...0.6.0) - 2026-05-22
+
+### Breaking changes
+
+- **`skill-authoring` and `writing-file-emitter` are now tagged `boost-extension`.** boost-core's tag filter ships a tagged skill only when the skill's tags are a subset of the consumer's `boost.php` `withTags()` declaration. These two skills therefore no longer sync to a project that has not declared the tag. A project that wants them must add it to `boost.php`:
+  
+  ```php
+  ->withTags(['boost-extension'])
+  
+  ```
+  The other four skills — `readme`, `release-notes`, `upgrading`, `lean-dist` — stay untagged and continue shipping to every consumer, unchanged. Rationale: the two extension skills are only actionable for packages that themselves ship boost-core skills or `FileEmitter`s; tagging lets every other package author opt out of guidance they can't use. Run `composer boost:tags` to see the tags declared by installed skills.
+  
+
+### Added
+
+- **`resources/boost/guidelines/foundation.md`** — the Package Boost foundation guideline. Framework-agnostic package-authoring guidance: the package-is-not-an-application framing, source layout, tests-as-specification, public API discipline, and conventions. Restored from the retired `package-boost` package, whose guidance reached no boost consumer after the migration to the split family. Auto-discovered by boost-core's guideline scanner — no consumer action required.
+
+### Changed
+
+- The `skill-authoring` skill now documents the `metadata.boost-tags` field — frontmatter shape, the subset-match rule, and the caveat that tagging an already-shipped skill is a breaking change for the package.
+- The PHPUnit cache directory is now `.cache/phpunit`, alongside the existing `.cache/phpstan` and `.cache/pint`. Dev-only; no consumer impact.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.5.0...0.6.0
 
 ## [0.5.0](https://github.com/sandermuller/package-boost-php/compare/0.4.0...0.5.0) - 2026-05-21
 
