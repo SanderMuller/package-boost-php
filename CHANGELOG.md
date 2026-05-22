@@ -5,7 +5,52 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.6.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.7.0...HEAD)
+
+## [0.7.0](https://github.com/sandermuller/package-boost-php/compare/0.6.0...0.7.0) - 2026-05-22
+
+Adopts `sandermuller/boost-core ^0.6`. boost-core 0.6.0 retired its Composer plugin, so the `composer boost:*` subcommands move to the standalone `vendor/bin/boost` binary and auto-sync on `composer install` becomes an opt-in callback you wire into your own project. package-boost-php itself remains a Composer plugin — its `package-boost-php:lean` and `package-boost-php:gitattributes` commands are unaffected.
+
+Also widens `symfony/console` and `symfony/process` to permit symfony 8 (Laravel 13).
+
+See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
+
+### Breaking changes
+
+- **Requires `sandermuller/boost-core ^0.6`.** boost-core 0.6.0 retired its Composer plugin:
+  - The `composer boost:*` subcommands are gone — run them through the standalone binary instead (the `boost:` prefix is dropped):
+    
+    | Was | Now |
+    |---|---|
+    | `composer boost:install` | `vendor/bin/boost install` |
+    | `composer boost:sync` | `vendor/bin/boost sync` |
+    | `composer boost:doctor` | `vendor/bin/boost doctor` |
+    | `composer boost:tags` | `vendor/bin/boost tags` |
+    
+  - **Auto-sync on `composer install` is no longer automatic.** To keep `composer install` re-syncing, wire the callback into *your own project's* `composer.json`:
+    
+    ```json
+    "scripts": {
+        "post-install-cmd": ["SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"],
+        "post-update-cmd": ["SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"]
+    }
+    
+    ```
+    A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
+    
+  - Optionally drop the now-dead `sandermuller/boost-core` entry from your `config.allow-plugins` — boost-core is no longer a plugin. Composer ignores the stale entry, so leaving it is harmless.
+    
+  
+
+### Changed
+
+- Widened `symfony/console` and `symfony/process` to `^7.0||^8.0`. `^7.0` alone excluded symfony 8 (Laravel 13); the widen unblocks installation on those projects. package-boost-laravel inherits the cap transitively, so the widen lifts it for the whole package-boost line.
+
+### Fixed
+
+- **0.6.0's release notes / README had `->withTags(['boost-extension'])`** — that array form passes an array into a variadic `Tag|string ...$tags` parameter and fatals with a TypeError on `boost.php` load. The correct call is variadic: `->withTags('boost-extension')`. Both files are corrected in this release; if you copied the array form from 0.6.0's notes into your `boost.php`, switch it.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.6.0...0.7.0
 
 ## [0.6.0](https://github.com/sandermuller/package-boost-php/compare/0.5.0...0.6.0) - 2026-05-22
 
@@ -15,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   
   ```php
   ->withTags('boost-extension')
+  
   ```
   The other four skills — `readme`, `release-notes`, `upgrading`, `lean-dist` — stay untagged and continue shipping to every consumer, unchanged. Rationale: the two extension skills are only actionable for packages that themselves ship boost-core skills or `FileEmitter`s; tagging lets every other package author opt out of guidance they can't use. Run `composer boost:tags` to see the tags declared by installed skills.
   
