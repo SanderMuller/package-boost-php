@@ -17,9 +17,9 @@ namespace SanderMuller\PackageBoostPhp\Gitattributes;
  */
 final class ManagedBlockWriter
 {
-    public const BLOCK_START = '# >>> package-boost (managed) >>>';
+    public const string BLOCK_START = '# >>> package-boost (managed) >>>';
 
-    public const BLOCK_END = '# <<< package-boost (managed) <<<';
+    public const string BLOCK_END = '# <<< package-boost (managed) <<<';
 
     /**
      * Canonical export-ignore entries package-boost-php manages. Exact-match
@@ -27,7 +27,7 @@ final class ManagedBlockWriter
      *
      * @var list<string>
      */
-    private const CANONICAL_LINES = [
+    private const array CANONICAL_LINES = [
         '.agents/                export-ignore',
         '.ai/                    export-ignore',
         '.claude/                export-ignore',
@@ -61,6 +61,7 @@ final class ManagedBlockWriter
         if ($original === '') {
             return $block;
         }
+
         if (! str_ends_with($original, "\n")) {
             $original .= "\n";
         }
@@ -96,11 +97,9 @@ final class ManagedBlockWriter
         $before = implode("\n", array_slice($lines, 0, $startIdx));
         $after = implode("\n", array_slice($lines, $endIdx + 1));
 
-        $rebuilt = ($before === '' ? '' : $before . "\n")
+        return ($before === '' ? '' : $before . "\n")
             . $newBlock
             . ($after === '' ? '' : "\n" . $after);
-
-        return $rebuilt;
     }
 
     /**
@@ -115,9 +114,11 @@ final class ManagedBlockWriter
             if ($trimmed === '') {
                 continue;
             }
+
             if (in_array($trimmed, self::CANONICAL_LINES, true)) {
                 continue;
             }
+
             $foreign[] = $trimmed;
         }
 
@@ -133,9 +134,11 @@ final class ManagedBlockWriter
         foreach (self::CANONICAL_LINES as $canonical) {
             $lines[] = $canonical;
         }
+
         foreach ($foreign as $foreignLine) {
             $lines[] = $foreignLine;
         }
+
         $lines[] = self::BLOCK_END;
 
         return implode("\n", $lines) . "\n";

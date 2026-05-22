@@ -54,8 +54,8 @@ final class GitattributesCommand extends BoostBaseCommand
         try {
             $original = is_file($path) ? (string) file_get_contents($path) : '';
             $updated = $this->writer->sync($original);
-        } catch (Throwable $e) {
-            $io->error('Failed to sync .gitattributes: ' . $e->getMessage());
+        } catch (Throwable $throwable) {
+            $io->error('Failed to sync .gitattributes: ' . $throwable->getMessage());
 
             return self::FAILURE;
         }
@@ -67,7 +67,7 @@ final class GitattributesCommand extends BoostBaseCommand
         }
 
         if ($checkOnly) {
-            $io->warning(sprintf('.gitattributes would change. Run without --check to apply.'));
+            $io->warning('.gitattributes would change. Run without --check to apply.');
 
             return self::FAILURE;
         }
