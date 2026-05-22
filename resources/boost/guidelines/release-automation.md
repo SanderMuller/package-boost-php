@@ -10,8 +10,9 @@ shipped.
 The package's `.github/workflows/update-changelog.yml` listens for
 `release: released`, uses `stefanzweifel/changelog-updater-action` to
 prepend the published release body to `CHANGELOG.md`, and commits the
-update back to `main`. That's the single source of truth for changelog
-entries.
+update back to the release's target branch (the
+`release.target_commitish`, typically `main`). That's the single source
+of truth for changelog entries.
 
 So:
 
@@ -25,14 +26,12 @@ So:
 ## Release notes live in `internal/release-notes-<version>.md`
 
 `internal/` is gitignored — drafts stay local. The notes file is the
-input to `gh release create --notes-file`, which triggers the
-update-changelog workflow.
+input the user passes to `gh release create --notes-file` when they
+cut the tag; that publish is what triggers the update-changelog
+workflow.
 
-```bash
+```
 internal/release-notes-0.7.0.md      # gitignored draft
-gh release create 0.7.0 \
-  --notes-file internal/release-notes-0.7.0.md \
-  --title "v0.7.0"
 ```
 
 The first line of the notes file pins the verified-green commit SHA in
@@ -58,16 +57,20 @@ if `HEAD` drifts between drafting notes and cutting the tag.
    (`gh run list --commit "$(git rev-parse HEAD)"`).
 4. Draft `internal/release-notes-<version>.md` with the SHA-pinned
    first line. Only after CI is green — notes claim CI-matrix facts.
-5. Run the pre-tag gate (re-verifies SHA hasn't drifted, CI still
-   green), then `gh release create <version> --notes-file
-   internal/release-notes-<version>.md --title "v<version>"`.
+5. **The user cuts the tag.** They run the pre-tag gate (re-verifies
+   SHA hasn't drifted, CI still green) and then
+   `gh release create <version> --notes-file
+   internal/release-notes-<version>.md --title "v<version>"`. Agents
+   stop at the ready-to-tag handoff and do NOT run release-create —
+   see the `pre-release` skill.
 6. CI's `update-changelog` workflow prepends the release body to
    `CHANGELOG.md` and commits.
 7. Watch the tag-ref CI re-fires + the `release`-event decorators
    (`update-changelog`) until terminal + green.
 
-The full procedure is the `pre-release` skill — this guideline pins the
-conventions that skill leans on.
+The full procedure (and the agent-handoff rules) lives in the
+`pre-release` skill — this guideline pins the conventions that skill
+leans on.
 
 ## Tag and version naming
 
