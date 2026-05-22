@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.3",
         "composer-plugin-api": "^2.6",
-        "sandermuller/boost-core": "^0.5",
+        "sandermuller/boost-core": "^0.6",
         "stolt/lean-package-validator": "^5.7",
         "symfony/console": "^7.0||^8.0",
         "symfony/process": "^7.0||^8.0"
@@ -65,10 +65,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::runWithSummary"
+            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
         ],
         "post-update-cmd": [
-            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::runWithSummary"
+            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
         ],
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "phpstan-simplified": "vendor/bin/phpstan analyse --memory-limit=2G --error-format symplify",
@@ -92,7 +92,6 @@
             "composer/composer": true,
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true,
-            "sandermuller/boost-core": true,
             "sandermuller/package-boost-php": true
         }
     },

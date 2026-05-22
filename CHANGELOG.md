@@ -14,8 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`skill-authoring` and `writing-file-emitter` are now tagged `boost-extension`.** boost-core's tag filter ships a tagged skill only when the skill's tags are a subset of the consumer's `boost.php` `withTags()` declaration. These two skills therefore no longer sync to a project that has not declared the tag. A project that wants them must add it to `boost.php`:
   
   ```php
-  ->withTags(['boost-extension'])
-  
+  ->withTags('boost-extension')
   ```
   The other four skills — `readme`, `release-notes`, `upgrading`, `lean-dist` — stay untagged and continue shipping to every consumer, unchanged. Rationale: the two extension skills are only actionable for packages that themselves ship boost-core skills or `FileEmitter`s; tagging lets every other package author opt out of guidance they can't use. Run `composer boost:tags` to see the tags declared by installed skills.
   

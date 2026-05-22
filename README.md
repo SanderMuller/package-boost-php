@@ -16,16 +16,16 @@ composer require --dev sandermuller/package-boost-php
 ## Usage
 
 ```bash
-composer boost:install   # interactive picker: agents + vendor allowlist (auto-generates boost.php on first run)
+vendor/bin/boost install   # interactive picker: agents + vendor allowlist (auto-generates boost.php on first run)
 vendor/bin/boost sync      # fan out skills + guidelines to selected agents
 
 composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
 ```
 
-Two skills are opt-in: `skill-authoring` and `writing-file-emitter` carry the `boost-extension` tag and sync only to projects whose `boost.php` declares `->withTags(['boost-extension'])`. The other four skills and the foundation guideline ship to every consumer.
+Two skills are opt-in: `skill-authoring` and `writing-file-emitter` carry the `boost-extension` tag and sync only to projects whose `boost.php` declares `->withTags('boost-extension')`. The other four skills and the foundation guideline ship to every consumer.
 
-Generated agent dirs are added to `.gitignore` automatically and regenerated on every `composer install` — edit `.ai/` only. Set `BOOST_SKIP_AUTOSYNC=1` to disable.
+Generated agent dirs are added to `.gitignore` automatically — edit `.ai/` only, then run `vendor/bin/boost sync`. To re-sync on every `composer install`, wire `SanderMuller\BoostCore\Scripts\BoostAutoSync::run` into your project's `post-install-cmd` / `post-update-cmd`; `BOOST_SKIP_AUTOSYNC=1` disables it.
 
 ## License
 
