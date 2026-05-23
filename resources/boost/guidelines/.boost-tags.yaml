@@ -1,0 +1,3 @@
+release-automation.md: "release-automation"
+# foundation.md is intentionally omitted — universal package-authoring,
+# always-on; tagging it would scope it.

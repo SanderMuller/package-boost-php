@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/sandermuller/package-boost-php.svg?style=flat-square)](https://packagist.org/packages/sandermuller/package-boost-php)
 [![License](https://img.shields.io/packagist/l/sandermuller/package-boost-php.svg?style=flat-square)](LICENSE)
 
-> AI agent skills for framework-agnostic Composer package authors. Ships the Package Boost foundation guideline (package-not-an-app authoring rules) and six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`), plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
+> AI agent skills for framework-agnostic Composer package authors. Ships two guidelines (`foundation` — package-not-an-app rules; `release-automation` — CHANGELOG + release-notes conventions, opt-in) and six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`), plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
 
 ## Install
 
@@ -23,7 +23,7 @@ composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
 ```
 
-Two skills are opt-in: `skill-authoring` and `writing-file-emitter` carry the `boost-extension` tag and sync only to projects whose `boost.php` declares `->withTags('boost-extension')`. The other four skills and the foundation guideline ship to every consumer.
+Opt-in via `boost.php` `withTags()`: the `skill-authoring` + `writing-file-emitter` skills require `'boost-extension'`; the `release-automation` guideline requires `'release-automation'`. The other four skills and the `foundation` guideline ship to every consumer.
 
 Generated agent dirs are added to `.gitignore` automatically — edit `.ai/` only, then run `vendor/bin/boost sync`. To re-sync on every `composer install`, wire `SanderMuller\BoostCore\Scripts\BoostAutoSync::run` into your project's `post-install-cmd` / `post-update-cmd`; `BOOST_SKIP_AUTOSYNC=1` disables it.
 
