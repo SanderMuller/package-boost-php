@@ -23,7 +23,7 @@ composer package-boost-php:lean            # validate .gitattributes
 composer package-boost-php:gitattributes   # sync the managed block
 ```
 
-Opt-in via `boost.php` `withTags()`: the `skill-authoring` + `writing-file-emitter` skills require `'boost-extension'`; the `release-automation` guideline requires `'release-automation'`. The other four skills and the `foundation` guideline ship to every consumer.
+Opt-in via `boost.php` `withTags()`: the `skill-authoring` + `writing-file-emitter` skills require `'boost-extension'`; the `release-automation` guideline requires `'release-automation'`. The other four skills and the `foundation` guideline ship to every consumer. See the [family-wide tag registry](https://github.com/SanderMuller/boost-skills#tags) for the full vocabulary.
 
 Generated agent dirs are added to `.gitignore` automatically — edit `.ai/` only, then run `vendor/bin/boost sync`. To re-sync on every `composer install`, wire `SanderMuller\BoostCore\Scripts\BoostAutoSync::run` into your project's `post-install-cmd` / `post-update-cmd`; `BOOST_SKIP_AUTOSYNC=1` disables it.
 
