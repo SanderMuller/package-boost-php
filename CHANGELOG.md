@@ -5,7 +5,24 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.7.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.8.0...HEAD)
+
+## [0.8.0](https://github.com/sandermuller/package-boost-php/compare/0.7.0...0.8.0) - 2026-05-23
+
+### Added
+
+- **`resources/boost/guidelines/release-automation.md`** — pins the release-flow conventions consumers want always-loaded when they follow this workflow: `CHANGELOG.md` is prepended by CI (`update-changelog.yml`), release notes are drafted in `internal/release-notes-<version>.md` (gitignored), the first line of that file pins a verified-green commit SHA, tags are bare (`0.8.0`) while release titles take the `v` prefix (`v0.8.0`), and agents stop at the ready-to-tag handoff. The procedural detail lives in the `release-notes` and `pre-release` skills — this guideline only pins the conventions those skills lean on.
+  
+- **`resources/boost/guidelines/.boost-tags.yaml`** — sidecar manifest gating `release-automation.md` behind the `release-automation` tag (boost-core 0.6's mechanism for tagging frontmatter-free guidelines). Consumers who follow this release workflow declare it in `boost.php`:
+  
+  ```php
+  ->withTags('release-automation')
+  
+  ```
+  Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
+  
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.7.0...0.8.0
 
 ## [0.7.0](https://github.com/sandermuller/package-boost-php/compare/0.6.0...0.7.0) - 2026-05-22
 
@@ -35,6 +52,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
         "post-update-cmd": ["SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"]
     }
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -60,6 +78,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   ```
   The other four skills — `readme`, `release-notes`, `upgrading`, `lean-dist` — stay untagged and continue shipping to every consumer, unchanged. Rationale: the two extension skills are only actionable for packages that themselves ship boost-core skills or `FileEmitter`s; tagging lets every other package author opt out of guidance they can't use. Run `composer boost:tags` to see the tags declared by installed skills.
