@@ -4,6 +4,7 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/sandermuller/package-boost-php/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/sandermuller/package-boost-php/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/sandermuller/package-boost-php.svg?style=flat-square)](https://packagist.org/packages/sandermuller/package-boost-php)
 [![License](https://img.shields.io/packagist/l/sandermuller/package-boost-php.svg?style=flat-square)](LICENSE)
+[![Laravel Boost](https://badge.laravel.cloud/boost-badge.svg?style=flat-square)](https://github.com/laravel/boost)
 
 > AI agent skills for framework-agnostic Composer package authors. Ships two guidelines (`foundation` — package-not-an-app rules; `release-automation` — CHANGELOG + release-notes conventions, opt-in) and six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`), plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
 
