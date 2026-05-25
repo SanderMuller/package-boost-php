@@ -46,7 +46,7 @@ tests/                  export-ignore
 
 ## Verifying
 
-Run `composer package-boost-php:lean` (this package) or directly via
+Run `vendor/bin/package-boost-php lean` (this package) or directly via
 `vendor/bin/lean-package-validator validate`. Both check the
 `.gitattributes` against `.lpv` rules.
 
@@ -54,7 +54,7 @@ Add to CI:
 
 ```yaml
 - name: Validate lean dist
-  run: composer package-boost-php:lean
+  run: vendor/bin/package-boost-php lean
 ```
 
 ## Anti-patterns

@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/packagist/l/sandermuller/package-boost-php.svg?style=flat-square)](LICENSE)
 [![Laravel Boost](https://badge.laravel.cloud/boost-badge.svg?style=flat-square)](https://github.com/laravel/boost)
 
-> AI agent skills for framework-agnostic Composer package authors. Ships two guidelines (`foundation` — package-not-an-app rules; `release-automation` — CHANGELOG + release-notes conventions, opt-in) and six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`), plus two commands: `package-boost-php:lean` (validates `.gitattributes` excludes non-shipping paths) and `package-boost-php:gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
+> AI agent skills for framework-agnostic Composer package authors. Ships two guidelines (`foundation` — package-not-an-app rules; `release-automation` — CHANGELOG + release-notes conventions, opt-in) and six package-author skills (`readme`, `release-notes`, `upgrading`, `lean-dist`, `skill-authoring`, `writing-file-emitter`), plus two commands: `vendor/bin/package-boost-php lean` (validates `.gitattributes` excludes non-shipping paths) and `vendor/bin/package-boost-php gitattributes` (maintains the `# >>> package-boost (managed) >>>` block, preserving foreign lines added by other tools).
 
 ## Install
 
@@ -20,8 +20,8 @@ composer require --dev sandermuller/package-boost-php
 vendor/bin/boost install   # interactive picker: agents + vendor allowlist (auto-generates boost.php on first run)
 vendor/bin/boost sync      # fan out skills + guidelines to selected agents
 
-composer package-boost-php:lean            # validate .gitattributes
-composer package-boost-php:gitattributes   # sync the managed block
+vendor/bin/package-boost-php lean            # validate .gitattributes
+vendor/bin/package-boost-php gitattributes   # sync the managed block
 ```
 
 Opt-in via `boost.php` `withTags()`: the `skill-authoring` + `writing-file-emitter` skills require `'boost-extension'`; the `release-automation` guideline requires `'release-automation'`. The other four skills and the `foundation` guideline ship to every consumer. See the [family-wide tag registry](https://github.com/SanderMuller/boost-skills#tags) for the full vocabulary.

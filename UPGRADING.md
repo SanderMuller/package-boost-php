@@ -2,6 +2,29 @@
 
 Breaking changes per major/minor bump.
 
+## 0.8 → 0.9
+
+0.9.0 drops `package-boost-php`'s own Composer plugin. The two
+`composer package-boost-php:*` subcommands move to the standalone
+`vendor/bin/package-boost-php` binary. boost-core had the same change
+in 0.6.0 — this is the package-boost-php counterpart.
+
+### `composer package-boost-php:*` commands are gone — use `vendor/bin/package-boost-php`
+
+| Was                                       | Now                                          |
+|-------------------------------------------|----------------------------------------------|
+| `composer package-boost-php:lean`         | `vendor/bin/package-boost-php lean`          |
+| `composer package-boost-php:gitattributes`| `vendor/bin/package-boost-php gitattributes` |
+
+Composer no longer prompts to allow this package as a plugin on
+`composer install` / `update`.
+
+### Optional: drop the dead `allow-plugins` entry
+
+If your `composer.json` lists `sandermuller/package-boost-php` under
+`config.allow-plugins`, remove it — the package is no longer a plugin.
+Composer ignores the stale entry, so leaving it is harmless.
+
 ## 0.6 → 0.7
 
 0.7.0 requires `sandermuller/boost-core ^0.6`. boost-core 0.6.0 retired its
