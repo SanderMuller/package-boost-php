@@ -5,7 +5,39 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.8.1...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.9.0...HEAD)
+
+## [0.9.0](https://github.com/sandermuller/package-boost-php/compare/0.8.1...0.9.0) - 2026-05-25
+
+Drops `package-boost-php`'s own Composer plugin. The two subcommands — `lean` and `gitattributes` — move to a standalone `vendor/bin/package-boost-php` binary, matching what `sandermuller/boost-core` did in 0.6.0. Net result: Composer no longer prompts `Do you trust "sandermuller/package-boost-php" to execute code` on `composer install` / `update`.
+
+### Breaking changes
+
+- **`composer package-boost-php:*` subcommands are gone.** Run them through the standalone binary instead:
+  
+  | Was                                        | Now                                          |
+  |--------------------------------------------|----------------------------------------------|
+  | `composer package-boost-php:lean`          | `vendor/bin/package-boost-php lean`          |
+  | `composer package-boost-php:gitattributes` | `vendor/bin/package-boost-php gitattributes` |
+  
+  CI configs that called the Composer subcommand need the swap. The arguments and exit codes are unchanged (`--working-dir`, `--check`).
+  
+- **`config.allow-plugins` entry is dead.** `sandermuller/package-boost-php: true` (or `false`) under your project's `config.allow-plugins` is now a no-op. Composer ignores the stale entry, so leaving it is harmless; remove it on cleanup.
+  
+
+### Removed
+
+- `SanderMuller\PackageBoostPhp\PackageBoostPhpPlugin`, `PackageBoostPhpCommandProvider`, and `BaseCommandAdapter` — the three classes existed only to expose `LeanCommand` + `GitattributesCommand` through Composer's `CommandProvider` capability.
+- `composer-plugin-api` require dropped from `composer.json` (no longer needed).
+- `composer/composer` dev-require dropped (only the plugin scaffolding referenced the Composer API surface).
+
+### Added
+
+- `bin/package-boost-php` — standalone Symfony Console entrypoint that wires `LeanCommand` + `GitattributesCommand` directly. Same source-of-truth command classes; only the invocation surface changed.
+
+See [UPGRADING.md](UPGRADING.md) for the full 0.8 → 0.9 migration.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.8.1...0.9.0
 
 ## [0.8.1](https://github.com/sandermuller/package-boost-php/compare/0.8.0...0.8.1) - 2026-05-25
 
@@ -27,6 +59,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   ```php
   ->withTags('release-automation')
+  
   
   
   ```
@@ -65,6 +98,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -90,6 +124,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
