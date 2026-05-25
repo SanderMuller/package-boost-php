@@ -5,7 +5,17 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.8.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.8.1...HEAD)
+
+## [0.8.1](https://github.com/sandermuller/package-boost-php/compare/0.8.0...0.8.1) - 2026-05-25
+
+Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is backward-compatible from 0.6.x — the three new surfaces (`withRemoteSkills(...)` for non-Composer skill sources, the `@experimental` `SkillRenderer` plugin contract, and the `SyncEngine::sync()` injection params) are opt-in; existing `boost.php` configs keep working unchanged. package-boost-php itself doesn't consume any of the new surfaces — the bump is purely a constraint widen so consumers can adopt boost-core 0.7.x without holding back this package's version.
+
+### Changed
+
+- **`sandermuller/boost-core` constraint widened to `^0.7`** (was `^0.6`). Pulls in [boost-core 0.7.0](https://github.com/SanderMuller/boost-core/releases/tag/0.7.0). No migration required — additive release; see boost-core's release notes for the new surfaces.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.8.0...0.8.1
 
 ## [0.8.0](https://github.com/sandermuller/package-boost-php/compare/0.7.0...0.8.0) - 2026-05-23
 
@@ -17,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   
   ```php
   ->withTags('release-automation')
+  
   
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
@@ -53,6 +64,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     }
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -78,6 +90,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   ```
