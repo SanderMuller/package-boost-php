@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
 use SanderMuller\BoostCore\Config\BoostConfig;
 use SanderMuller\BoostCore\Enums\Agent;
+use SanderMuller\BoostCore\Enums\Tag;
 
 /**
  * boost-core configuration.
@@ -13,4 +13,16 @@ use SanderMuller\BoostCore\Enums\Agent;
  *
  * Docs: https://github.com/sandermuller/boost-core
  */
-return BoostConfig::configure()->withAgents([Agent::CLAUDE_CODE, Agent::COPILOT, Agent::CODEX])->withAllowedVendors(['sandermuller/boost-skills', 'sandermuller/package-boost-php', 'stolt/lean-package-validator'])->withTags('php', 'github', 'release-automation')->withDisabledEmitters([]);
+return BoostConfig::configure()
+    ->withAgents([
+        Agent::CLAUDE_CODE,
+        Agent::COPILOT,
+        Agent::CODEX,
+    ])
+    ->withAllowedVendors([
+        'sandermuller/boost-skills',
+        'sandermuller/package-boost-php',
+        'stolt/lean-package-validator'
+    ])
+    ->withTags(Tag::Php, Tag::Github, 'release-automation')
+    ->withDisabledEmitters([]);
