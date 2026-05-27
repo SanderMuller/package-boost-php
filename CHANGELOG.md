@@ -5,7 +5,40 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.9.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.0...HEAD)
+
+## [0.10.0](https://github.com/sandermuller/package-boost-php/compare/0.9.0...0.10.0) - 2026-05-27
+
+### Skill migration to `sandermuller/boost-skills`
+
+The `readme`, `release-notes`, and `upgrading` skills move to [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) 1.6.0+ under the `release-automation` opt-in tag. Their content is unchanged; only the publishing vendor changed.
+
+This narrows `package-boost-php`'s scope to what it owns uniquely: package-author CLI infrastructure (`vendor/bin/package-boost-php lean` + `gitattributes`) and skill-authoring tooling for the boost ecosystem (`skill-authoring`, `writing-file-emitter`, `lean-dist`). The release-flow content skills sit better in `boost-skills` where they are tag-gated for any consumer who wants them, not just framework-agnostic-package authors.
+
+#### Migration
+
+```bash
+composer require --dev "sandermuller/boost-skills:^1.6"
+
+```
+Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
+
+### `sandermuller/boost-core: ^0.8` required
+
+Bumped from `^0.7` for the conventions-schema layer (vendor schemas, `boost validate`, slot resolution). `boost sync` continues to work without a schema file — vendors that ship no `conventions-schema.json` are reported but not blocked. See boost-core's own UPGRADING.md for migration details.
+
+### README rewrite
+
+Full rewrite to the canonical family-README shape (~138 lines). Adds: routing table, L/Boost-comparison callout, three-table "what you get" surfacing commands + guidelines + skills as co-equal value axes, dogfood `boost.php` example + absolute-minimum example, opt-in tags section with mechanism-vs-vocabulary canon split.
+
+Three-peer review cycle: boost-core (`6scam1ri`), boost-skills (`09jhthi9`), project-boost-laravel (`9t8ugveb`) maintainers all weighed in; final edits incorporate their feedback.
+
+### Upgrade
+
+- `package-boost-php: ^0.9` → `^0.10`
+- Pair with `sandermuller/boost-skills: ^1.6` if you want the migrated skills.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.9.0...0.10.0
 
 ## [0.9.0](https://github.com/sandermuller/package-boost-php/compare/0.8.1...0.9.0) - 2026-05-25
 
@@ -62,6 +95,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -99,6 +133,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -124,6 +159,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
