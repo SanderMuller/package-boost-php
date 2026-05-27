@@ -2,6 +2,69 @@
 
 Breaking changes per major/minor bump.
 
+## 0.9 → 0.10
+
+0.10.0 (a) moves three skills out of `package-boost-php` into
+`sandermuller/boost-skills` and (b) bumps the `sandermuller/boost-core`
+constraint to `^0.8` (was `^0.7`). The skills themselves are unchanged
+— only the publishing vendor moves.
+
+### `sandermuller/boost-core: ^0.8` required
+
+Consumers locked on `boost-core ^0.7` must upgrade. boost-core 0.8.0
+ships the conventions-schema layer (vendor schemas, `boost validate`,
+slot resolution); see boost-core's own UPGRADING.md for migration
+details. `boost sync` continues to work without a schema file —
+vendors that ship no `conventions-schema.json` are reported but not
+blocked.
+
+### `readme`, `release-notes`, `upgrading` skills moved to `sandermuller/boost-skills`
+
+These three skills now ship from
+[`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills)
+1.6.0+ under the `release-automation` opt-in tag. To continue
+receiving them:
+
+1. Require `sandermuller/boost-skills` as a dev dependency:
+   ```bash
+   composer require --dev "sandermuller/boost-skills:^1.6"
+   ```
+2. Add `'sandermuller/boost-skills'` to `withAllowedVendors([...])`
+   in your `boost.php` (if not already present).
+3. Add `'release-automation'` to `withTags(...)` in your `boost.php`.
+
+Without the tag, the skills do not sync — the opt-in is intentional
+so consumers who do not author packages can keep these skills off
+their agents.
+
+The `lean-dist`, `skill-authoring`, and `writing-file-emitter` skills
+plus the `foundation` and `release-automation` guidelines continue to
+ship from `package-boost-php`.
+
+### Overlap-window workaround
+
+During the window where a consumer runs `package-boost-php < 0.10.0`
+alongside `boost-skills >= 1.6.0`, `boost-core` errors on the
+vendor-vs-vendor skill collision:
+
+```
+[ERROR] Skill "readme" is published by multiple vendors:
+        sandermuller/boost-skills, sandermuller/package-boost-php.
+```
+
+Either upgrade `package-boost-php` to `^0.10` (preferred), or add an
+explicit exclusion to `boost.php`:
+
+```php
+->withExcludedSkills([
+    'sandermuller/package-boost-php:readme',
+    'sandermuller/package-boost-php:release-notes',
+    'sandermuller/package-boost-php:upgrading',
+])
+```
+
+Drop the exclusions once `package-boost-php >= 0.10.0` is required.
+
 ## 0.8 → 0.9
 
 0.9.0 drops `package-boost-php`'s own Composer plugin. The two

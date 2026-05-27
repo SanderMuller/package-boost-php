@@ -22,7 +22,6 @@ return BoostConfig::configure()
     ->withAllowedVendors([
         'sandermuller/boost-skills',
         'sandermuller/package-boost-php',
-        'stolt/lean-package-validator'
+        'stolt/lean-package-validator',
     ])
-    ->withTags(Tag::Php, Tag::Github, 'release-automation')
-    ->withDisabledEmitters([]);
+    ->withTags(Tag::Php, Tag::Github, 'release-automation', 'boost-extension');
