@@ -83,11 +83,17 @@ return BoostConfig::configure()
         Agent::CODEX,
     ])
     ->withAllowedVendors([
+        'sandermuller/boost-core',
         'sandermuller/boost-skills',
         'sandermuller/package-boost-php',
         'stolt/lean-package-validator',
     ])
-    ->withTags(Tag::Php, Tag::Github, 'release-automation', 'boost-extension');
+    ->withTags(
+        Tag::Php,
+        Tag::Github,
+        'release-automation',
+        'boost-extension',
+    );
 ```
 
 The absolute minimum to boot is one agent + this package in the allowlist:

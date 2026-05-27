@@ -20,8 +20,14 @@ return BoostConfig::configure()
         Agent::CODEX,
     ])
     ->withAllowedVendors([
+        'sandermuller/boost-core',
         'sandermuller/boost-skills',
         'sandermuller/package-boost-php',
         'stolt/lean-package-validator',
     ])
-    ->withTags(Tag::Php, Tag::Github, 'release-automation', 'boost-extension');
+    ->withTags(
+        Tag::Php,
+        Tag::Github,
+        'release-automation',
+        'boost-extension',
+    );
