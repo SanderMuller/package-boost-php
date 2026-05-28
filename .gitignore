@@ -16,5 +16,4 @@ composer.lock
 .claude/commands/
 .claude/skills/
 .github/prompts/
-.github/skills/
 # <<< boost (managed) <<<
