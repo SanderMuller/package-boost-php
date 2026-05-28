@@ -28,6 +28,7 @@ return BoostConfig::configure()
     ->withTags(
         Tag::Php,
         Tag::Github,
+        Tag::Pest,
         'release-automation',
         'boost-extension',
     );
