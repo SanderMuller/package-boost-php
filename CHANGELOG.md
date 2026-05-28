@@ -5,7 +5,30 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.1...HEAD)
+
+## [0.10.1](https://github.com/sandermuller/package-boost-php/compare/0.10.0...0.10.1) - 2026-05-28
+
+### `sandermuller/boost-core: ^0.8 || ^0.9` accepted
+
+Widened the boost-core constraint. Consumers can now resolve `package-boost-php: ^0.10` against either boost-core 0.8.x or 0.9.x — additive widen, no consumer of `^0.8` breaks.
+
+boost-core 0.9.0 ships the Project Conventions shape change (operator-edit surface moves from CLAUDE.md's YAML body to `boost.php`'s `->withConventions([...])` chain), the Copilot/AGENTS.md merge per the GitHub Changelog 2025-08-28 update, and marker-bounded guideline writes that survive operator edits across sync. Public surface unchanged — no source edits in this package.
+
+Verified across the existing CI matrix: PHP 8.3 + 8.4, `prefer-lowest` (resolves 0.8.0) and `prefer-stable` (resolves 0.9.0). All green.
+
+### Tracking-model flip absorbed
+
+`AGENTS.md`, `CLAUDE.md`, and `.github/copilot-instructions.md` are now tracked in git per boost-core 0.8.3, which dropped them from the boost-managed `.gitignore` block. Operator-owned content lives outside the `<!-- boost-core:guidelines:start --> ... end -->` markers and survives sync round-trips.
+
+A duplicate-content drift surfaced during dogfood: pre-0.9.0 sync wrote the full guideline content to those files when the paths were still gitignored, leaving the old copy as "operator content" above the new markers after the 0.8.3 flip. Trimmed in this release. Other consumers upgrading from 0.8.x with previously-gitignored agent files will see the same drift — `vendor/bin/boost sync` is idempotent after the trim.
+
+### Upgrade
+
+- `package-boost-php: ^0.10` → no constraint change required from consumers
+- Pair with `sandermuller/boost-core: ^0.9` to pick up the 0.9.0 Project Conventions surface
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.10.0...0.10.1
 
 ## [0.10.0](https://github.com/sandermuller/package-boost-php/compare/0.9.0...0.10.0) - 2026-05-27
 
@@ -19,6 +42,7 @@ This narrows `package-boost-php`'s scope to what it owns uniquely: package-autho
 
 ```bash
 composer require --dev "sandermuller/boost-skills:^1.6"
+
 
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
@@ -96,6 +120,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -134,6 +159,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -159,6 +185,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
