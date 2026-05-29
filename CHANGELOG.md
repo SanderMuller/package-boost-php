@@ -5,7 +5,41 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.11.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.12.0...HEAD)
+
+## [0.12.0](https://github.com/sandermuller/package-boost-php/compare/0.11.0...0.12.0) - 2026-05-29
+
+<!-- verified-sha: a11882b5d00a95d5c216ac189134ad1e74fa9dcb -->
+### Breaking changes
+
+#### `sandermuller/boost-core: ^0.10` required
+
+Floor-bumps the boost-core constraint from `^0.9` to `^0.10`.
+
+boost-core 0.10.0 is the wrong-entry-point ergonomics cycle — `boost doctor` entry-point mismatch banner + three-case diagnostic split, closing a silent-capability-loss bug class. Per the family's load-bearing-only floor-pin discipline, that load-bearing condition supports floor-bumping over absorb-via-widened-OR here.
+
+This release skips the widened-OR lifecycle's open + absorb beats: 0.11.0's previous-close (`^0.9`) goes directly to 0.12.0's next-close (`^0.10`). Different shape than the 0.10.1 → 0.11.0 cycle, which exercised the full open → absorb → close progression for the 0.8 → 0.9 transition. The floor-bump path is the empirical counterpoint to the lifecycle pattern, supported when the bump is load-bearing and the wrapper's adoption cohort is tight enough to absorb the breaking-resolve.
+
+No code or API changes in this package — `BoostBaseCommand` remains the only boost-core symbol used, with stable signature across all relevant versions.
+
+**Migration**: bump your boost-core constraint to `^0.10`:
+
+```bash
+composer require sandermuller/boost-core:^0.10
+
+```
+If you were already on `boost-core ^0.10`, no action is required.
+
+See [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) for the `0.11 → 0.12` migration entry. boost-core 0.10.0's own release notes cover the wrong-entry-point cycle's user-facing improvements (entry-point mismatch banner, three-case diagnostic split).
+
+### Upgrade
+
+| From | To | Action |
+|---|---|---|
+| `package-boost-php: ^0.11` + `boost-core: ^0.10` | `^0.12` | None — `composer update sandermuller/package-boost-php` resolves cleanly |
+| `package-boost-php: ^0.11` + `boost-core: ^0.9` | `^0.12` | Bump boost-core: `composer require sandermuller/boost-core:^0.10` |
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.11.0...0.12.0
 
 ## [0.11.0](https://github.com/sandermuller/package-boost-php/compare/0.10.3...0.11.0) - 2026-05-29
 
@@ -23,6 +57,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 ```
 If you were already on `boost-core ^0.9`, no action is required.
@@ -112,6 +147,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -192,6 +228,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -234,6 +271,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -259,6 +297,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
