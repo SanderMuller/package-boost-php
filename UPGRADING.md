@@ -2,6 +2,32 @@
 
 Breaking changes per major/minor bump.
 
+## 0.11 → 0.12
+
+0.12.0 floor-bumps `sandermuller/boost-core` to `^0.10`. boost-core
+0.10.0 is a load-bearing minor (closes a silent-capability-loss bug
+class via the wrong-entry-point ergonomics cycle), and the family's
+load-bearing-only floor-pin discipline supports floor-bumping over
+absorb-via-widened-OR when the load-bearing condition holds.
+
+### `sandermuller/boost-core: ^0.10` required
+
+Bump your boost-core constraint to `^0.10`:
+
+```bash
+composer require sandermuller/boost-core:^0.10
+```
+
+boost-core 0.10.0 ships the wrong-entry-point ergonomics cycle —
+`boost doctor` entry-point mismatch banner + three-case diagnostic
+split. The engine surface stays framework-agnostic (Laravel-aware
+features gated on `project-boost-laravel` presence). No public-API
+breaks within boost-core itself; the floor-bump on this side is the
+load-bearing absorb.
+
+The package's public surface and skills are unchanged. If you were
+already on `boost-core ^0.10`, no action is required.
+
 ## 0.10 → 0.11
 
 0.11.0 drops `sandermuller/boost-core ^0.8` support — constraint
