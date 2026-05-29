@@ -5,7 +5,35 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.3...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.11.0...HEAD)
+
+## [0.11.0](https://github.com/sandermuller/package-boost-php/compare/0.10.3...0.11.0) - 2026-05-29
+
+### Breaking changes
+
+#### `sandermuller/boost-core: ^0.9` required
+
+Drops support for `boost-core ^0.8`. The constraint narrows from `^0.8 || ^0.9` to `^0.9`.
+
+The widened-OR shipped in 0.10.1 was the gentle-absorption window for consumers crossing the boost-core 0.8 → 0.9 line; that window closes in 0.11.0. boost-core's 0.9 line stabilised across 0.9.1 → 0.9.6 (validate fix, data-loss safety on guideline writes, path-ownership-registry reframe), and the family has settled on 0.9 as the canonical foundation.
+
+No code or API changes in this package — `BoostBaseCommand` is the only boost-core symbol used and has stable signature across both versions. The narrowing is purely a constraint-range decision.
+
+**Migration**: bump your boost-core constraint to `^0.9`:
+
+```bash
+composer require sandermuller/boost-core:^0.9
+
+```
+If you were already on `boost-core ^0.9`, no action is required.
+
+See [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) for the full migration note and a pointer to boost-core's own UPGRADING.md (the conventions-schema layer, Project Conventions edit-surface move, Copilot/AGENTS.md merge).
+
+### Internal
+
+- `sandermuller/boost-skills` dev floor bumped from `^1.6` to `^1.7` (no consumer impact; dev dependency only).
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.10.3...0.11.0
 
 ## [0.10.3](https://github.com/sandermuller/package-boost-php/compare/0.10.2...0.10.3) - 2026-05-29
 
@@ -79,6 +107,7 @@ This narrows `package-boost-php`'s scope to what it owns uniquely: package-autho
 
 ```bash
 composer require --dev "sandermuller/boost-skills:^1.6"
+
 
 
 
@@ -162,6 +191,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -203,6 +233,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -228,6 +259,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
