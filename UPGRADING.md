@@ -2,6 +2,33 @@
 
 Breaking changes per major/minor bump.
 
+## 0.10 → 0.11
+
+0.11.0 drops `sandermuller/boost-core ^0.8` support — constraint
+narrows from `^0.8 || ^0.9` to `^0.9`. No code or API changes;
+constraint-range narrowing only. The widened-OR shipped in 0.10.1
+was the gentle-absorption window for consumers crossing the
+boost-core 0.8 → 0.9 line; that window closes in 0.11.0.
+
+### `sandermuller/boost-core: ^0.9` required
+
+If your `composer.json` requires `sandermuller/boost-core: ^0.8`,
+bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.9
+```
+
+boost-core 0.9.0 shipped the Project Conventions surface change
+(operator-edit moves from CLAUDE.md's YAML body to `boost.php`'s
+`->withConventions([...])` chain), the Copilot/AGENTS.md merge per
+[GitHub Changelog 2025-08-28](https://github.blog/changelog/), and
+marker-bounded guideline writes that survive operator edits across
+sync. See boost-core's UPGRADING.md for the full migration.
+
+The package's public surface and skills are unchanged. If you were
+already on `boost-core ^0.9`, no action is required.
+
 ## 0.9 → 0.10
 
 0.10.0 (a) moves three skills out of `package-boost-php` into
