@@ -5,7 +5,20 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.2...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.10.3...HEAD)
+
+## [0.10.3](https://github.com/sandermuller/package-boost-php/compare/0.10.2...0.10.3) - 2026-05-29
+
+### Documentation + cleanup absorb
+
+Two polish-tier commits since 0.10.2:
+
+- **README line-66 clarification**: tightened the "Generated agent dirs ... `.gitignore` automatically" phrasing to disambiguate dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) from root-level agent files (`AGENTS.md`, `CLAUDE.md`). The root-level files are tracked per boost-core 0.8.3's tracking-model and survive sync round-trips; the previous phrasing risked misreading them as also auto-gitignored.
+- **Stale `.github/copilot-instructions.md` removed**: the file was tracked into git in 0.10.1's widen commit when boost-core 0.8.3's tracking-model flip exposed previously-gitignored agent files. boost-core 0.9.6 ships the path-ownership-registry reframe — retired emitter paths are cleaned unconditionally on next sync. Absorbing 0.9.6 cleaned the file on disk; this release commits the deletion.
+
+No constraint change. boost-core `^0.8 || ^0.9` still resolves; current absorb is against 0.9.6.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.10.2...0.10.3
 
 ## [0.10.2](https://github.com/sandermuller/package-boost-php/compare/0.10.1...0.10.2) - 2026-05-28
 
@@ -66,6 +79,7 @@ This narrows `package-boost-php`'s scope to what it owns uniquely: package-autho
 
 ```bash
 composer require --dev "sandermuller/boost-skills:^1.6"
+
 
 
 
@@ -147,6 +161,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -187,6 +202,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -212,6 +228,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
