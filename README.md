@@ -63,7 +63,7 @@ vendor/bin/package-boost-php gitattributes   # write or refresh the managed .git
 vendor/bin/package-boost-php lean            # confirm the archive is lean
 ```
 
-Generated agent dirs (`.claude/`, `.cursor/`, etc.) are added to `.gitignore` automatically — edit `.ai/` only, then re-run `vendor/bin/boost sync`.
+Generated agent dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) are added to `.gitignore` automatically; root-level agent files (`AGENTS.md`, `CLAUDE.md`) are tracked per boost-core 0.8.3's tracking-model. Edit `.ai/` only, then re-run `vendor/bin/boost sync`.
 
 ## `boost.php` config
 
