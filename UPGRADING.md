@@ -2,6 +2,22 @@
 
 Breaking changes per major/minor bump.
 
+## 0.12 → 0.13
+
+0.13.0 widens the `sandermuller/boost-core` constraint from `^0.10`
+to `^0.10 || ^0.11` — no floor-bump, gentle absorption only.
+boost-core 0.11.0 adds drift-comparison wrapper-injection awareness
+(`BoostWrapperContract` + `WrapperEmitDiscovery`), a consumer-side
+correctness fix for vendors that inject wrapper files. That capability
+is additive and framework-agnostic-package-author-irrelevant —
+`package-boost-php` ships no wrapper, so the change is not load-bearing
+here. The widened OR lets consumers move to boost-core `^0.11`
+(typically alongside `project-boost-laravel ^0.4`) without pinning
+`package-boost-php` back.
+
+No code, API, or skill changes. If you stay on `boost-core ^0.10`, no
+action is required.
+
 ## 0.11 → 0.12
 
 0.12.0 floor-bumps `sandermuller/boost-core` to `^0.10`. boost-core
