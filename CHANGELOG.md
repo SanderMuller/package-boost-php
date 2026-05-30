@@ -5,7 +5,36 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.13.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.14.0...HEAD)
+
+## [0.14.0](https://github.com/sandermuller/package-boost-php/compare/0.13.0...0.14.0) - 2026-05-30
+
+<!-- verified-sha: 63bfb36a8fad5d575ad2733b638668685dc2ce2b -->
+### ⚠️ Breaking: `sandermuller/boost-core` narrowed to `^0.12`
+
+0.14.0 narrows the `sandermuller/boost-core` constraint from `^0.10 || ^0.11` to `^0.12`, dropping boost-core 0.10 and 0.11 from the supported matrix.
+
+This is a **retention-policy bump** — a deliberate maintenance choice to shrink the test surface — not the absorption of a load-bearing boost-core 0.12 feature. Nothing in boost-core 0.12.0 requires a package-side code change here; `package-boost-php`'s runtime behaves identically against boost-core 0.10 / 0.11 / 0.12.
+
+#### Upgrade
+
+Consumers on `boost-core ^0.10` or `^0.11` must bump:
+
+```bash
+composer require sandermuller/boost-core:^0.12
+
+```
+boost-core 0.12.0 ships markerless agent-guidance files — `CLAUDE.md` / `AGENTS.md` are now wholesale boost-owned and regenerated in full each sync (no `<!-- boost-core:guidelines -->` markers), with an empty-assembly guard that never blanks a non-empty guidance file. On your first `boost sync` against 0.12 the marker comments are stripped from tracked guidance files; the guideline content is preserved. See boost-core's own UPGRADING.md for details.
+
+### Dogfood adopts the markerless model
+
+This repo's own `CLAUDE.md` / `AGENTS.md` regenerated under 0.12.0 — markers stripped, authored guideline body intact (PHPStan-fix, verification, package-boost, release-automation guidelines all retained). The empty `## Project Conventions` stub drops out, since `boost.php` declares no conventions.
+
+### No public-API or skill changes
+
+The package's commands, guidelines, and skills are unchanged. Full migration note in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.13.0...0.14.0
 
 ## [0.13.0](https://github.com/sandermuller/package-boost-php/compare/0.12.0...0.13.0) - 2026-05-30
 
@@ -46,6 +75,7 @@ No code or API changes in this package — `BoostBaseCommand` remains the only b
 composer require sandermuller/boost-core:^0.10
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -76,6 +106,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -169,6 +200,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -251,6 +283,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -295,6 +328,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -320,6 +354,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
