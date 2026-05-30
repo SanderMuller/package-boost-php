@@ -2,6 +2,36 @@
 
 Breaking changes per major/minor bump.
 
+## 0.13 → 0.14
+
+0.14.0 narrows the `sandermuller/boost-core` constraint from
+`^0.10 || ^0.11` to `^0.12` — a retention-policy bump that drops
+`boost-core 0.10` and `0.11` from the supported matrix. This is a
+deliberate maintenance choice to shrink the test surface, not the
+absorption of a load-bearing `boost-core 0.12` feature: nothing in
+0.12.0 requires a package-side code change here. `package-boost-php`'s
+runtime behaves identically against boost-core 0.10 / 0.11 / 0.12.
+
+### `sandermuller/boost-core: ^0.12` required
+
+If your `composer.json` requires `sandermuller/boost-core: ^0.10` or
+`^0.11`, bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.12
+```
+
+boost-core 0.12.0 ships markerless agent-guidance files — `CLAUDE.md`,
+`AGENTS.md`, etc. are now wholesale boost-owned and regenerated in full
+each sync (no `<!-- boost-core:guidelines -->` markers), with an
+empty-assembly guard that never blanks a non-empty guidance file. On
+your first `boost sync` against 0.12, the marker comments are stripped
+from your tracked guidance files; the guideline content itself is
+preserved. See boost-core's own UPGRADING.md for the full migration.
+
+The package's public surface and skills are unchanged. If you were
+already on `boost-core ^0.12`, no action is required.
+
 ## 0.12 → 0.13
 
 0.13.0 widens the `sandermuller/boost-core` constraint from `^0.10`

@@ -1,5 +1,3 @@
-<!-- boost-core:guidelines:start -->
-<!-- Managed by boost-core. Do not remove or move these markers. Content outside is operator-owned. -->
 ## Fixing PHPStan Errors
 
 When fixing a PHPStan error, first decide whether it represents a runtime bug a test could catch — and if so, write that test before the fix.
@@ -187,4 +185,3 @@ Agents stop at the ready-to-tag handoff. The user runs the pre-tag
 gate and publishes the release (GitHub UI, `gh`, or otherwise). See
 the `pre-release` skill for the full procedure and the no-release-create
 rule.
-<!-- boost-core:guidelines:end -->
