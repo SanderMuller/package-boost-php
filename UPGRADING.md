@@ -2,6 +2,34 @@
 
 Breaking changes per major/minor bump.
 
+## 0.15 → 0.16
+
+0.16.0 adds a one-package auto-sync entry point. The package now ships
+`SanderMuller\PackageBoostPhp\Scripts\AutoSync` — a thin façade over
+boost-core's `BoostAutoSync` — so your `composer.json` scripts can wire
+auto-sync while referencing only this package's own namespace, never the
+transitive `sandermuller/boost-core` dependency.
+
+**Non-breaking.** The previous
+`SanderMuller\BoostCore\Scripts\BoostAutoSync::run` wiring still resolves
+(boost-core comes in transitively). The migration below is optional but
+recommended for a clean one-package install.
+
+### Optional: swap the auto-sync callback to this package's namespace
+
+In your project's `composer.json` `scripts`:
+
+| Was                                                  | Now                                                        |
+|------------------------------------------------------|------------------------------------------------------------|
+| `SanderMuller\BoostCore\Scripts\BoostAutoSync::run`  | `SanderMuller\PackageBoostPhp\Scripts\AutoSync::run`       |
+
+`AutoSync::run` delegates to boost-core's engine and inherits every guard
+unchanged (`--no-dev`, `BOOST_SKIP_AUTOSYNC`, the no-op silence). For a
+user-invoked script that should always print the one-line summary (e.g.
+`composer sync-ai`), use `AutoSync::runWithSummary`. Once swapped, drop
+any explicit `sandermuller/boost-core` entry from your `require` — it
+resolves through `package-boost-php`.
+
 ## 0.14 → 0.15
 
 0.15.0 narrows the `sandermuller/boost-core` constraint from `^0.12`
