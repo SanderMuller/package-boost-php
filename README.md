@@ -44,7 +44,7 @@ AI agent skills, guidelines, and `.gitattributes` commands for framework-agnosti
 | `skill-authoring`        | Authoring or editing AI skills for the boost family.                   | `boost-extension`    |
 | `writing-file-emitter`   | Implementing a custom `FileEmitter` for boost-core (`.mcp.json` etc.). | `boost-extension`    |
 
-The `readme`, `release-notes`, and `upgrading` skills moved to [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) 1.6.0+ under the `release-automation` tag. See [UPGRADING](UPGRADING.md) for the migration note.
+The `readme`, `release-notes`, and `upgrading` skills moved to [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) under the `release-automation` tag. See [UPGRADING](UPGRADING.md) for the migration note.
 
 ## Install
 
@@ -63,7 +63,7 @@ vendor/bin/package-boost-php gitattributes   # write or refresh the managed .git
 vendor/bin/package-boost-php lean            # confirm the archive is lean
 ```
 
-Generated agent dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) are added to `.gitignore` automatically; root-level agent files (`AGENTS.md`, `CLAUDE.md`) are tracked per boost-core 0.8.3's tracking-model. Edit `.ai/` only, then re-run `vendor/bin/boost sync`.
+Generated agent dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) are added to `.gitignore` automatically; root-level agent files (`AGENTS.md`, `CLAUDE.md`) are tracked, not gitignored, per boost-core's tracking model. Edit `.ai/` only, then re-run `vendor/bin/boost sync`.
 
 ## `boost.php` config
 

@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "sandermuller/boost-core": "^0.13 || ^0.14 || ^0.15 || ^0.16",
+        "sandermuller/boost-core": "^0.16",
         "stolt/lean-package-validator": "^5.7",
         "symfony/console": "^7.0||^8.0",
         "symfony/process": "^7.0||^8.0"
@@ -43,7 +43,7 @@
         "phpstan/phpstan-strict-rules": "^2.0",
         "rector/rector": "^2.4",
         "rector/type-perfect": "^2.1",
-        "sandermuller/boost-skills": "^1.9",
+        "sandermuller/boost-skills": "^2.0",
         "spaze/phpstan-disallowed-calls": "^4.12",
         "symplify/phpstan-extensions": "^12.0",
         "tomasvotruba/cognitive-complexity": "^1.1",

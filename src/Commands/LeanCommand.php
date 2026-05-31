@@ -57,17 +57,12 @@ final class LeanCommand extends BoostBaseCommand
 
     private function locateValidatorBinary(string $projectRoot): ?string
     {
-        $candidates = [
-            $projectRoot . '/vendor/bin/lean-package-validator',
-            __DIR__ . '/../../vendor/bin/lean-package-validator',
-        ];
+        // The validated project's own vendor/bin is the only correct
+        // location: when this package is installed as a dependency the
+        // binary lands in the consumer's vendor/bin; when run against the
+        // package itself, the project root is the cwd and resolves here too.
+        $binary = $projectRoot . '/vendor/bin/lean-package-validator';
 
-        foreach ($candidates as $candidate) {
-            if (is_file($candidate) && is_executable($candidate)) {
-                return $candidate;
-            }
-        }
-
-        return null;
+        return is_file($binary) && is_executable($binary) ? $binary : null;
     }
 }

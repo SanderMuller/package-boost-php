@@ -83,11 +83,51 @@ TXT;
     expect($result)->toContain('*.bin binary');
 });
 
-it('treats malformed blocks (open without close) as no-block and appends fresh', function (): void {
-    $original = "# >>> package-boost (managed) >>>\n.ai/ export-ignore\n";
+it('self-heals a malformed block (open marker, no close) into one idempotent block', function (): void {
+    $writer = new ManagedBlockWriter();
+    $malformed = "# >>> package-boost (managed) >>>\n.ai/ export-ignore\n";
+    $once = $writer->sync($malformed);
+
+    // No second block accreted: exactly one start and one close marker.
+    expect(substr_count($once, '# >>> package-boost (managed) >>>'))->toBe(1);
+    expect(substr_count($once, '# <<< package-boost (managed) <<<'))->toBe(1);
+
+    // Idempotent: re-syncing the healed output is a no-op (sync(sync(x)) === sync(x)).
+    expect($writer->sync($once))->toBe($once);
+});
+
+it('preserves CRLF line endings and does not duplicate canonical lines', function (): void {
+    $result = (new ManagedBlockWriter())->sync("*.php text=auto\r\n");
+
+    // Every newline is CRLF — no bare LF survived.
+    expect(preg_match('/(?<!\r)\n/', $result))->toBe(0);
+    expect($result)->toContain("\r\n");
+    expect(substr_count($result, 'CLAUDE.md'))->toBe(1);
+});
+
+it('settles a mostly-LF file with a stray CRLF line to LF (dominant EOL wins)', function (): void {
+    // Two LF lines, one CRLF line — LF dominates, so no line churns to CRLF.
+    $result = (new ManagedBlockWriter())->sync("*.php text=auto\n*.css diff=css\n*.bin binary\r\n");
+
+    expect($result)->not->toContain("\r\n");
+});
+
+it('recognizes a whitespace variant of a canonical line and does not duplicate it', function (): void {
+    // '.ai/ export-ignore' is the single-space variant of the aligned canonical entry.
+    $original = "# >>> package-boost (managed) >>>\n.ai/ export-ignore\n# <<< package-boost (managed) <<<\n";
     $result = (new ManagedBlockWriter())->sync($original);
 
-    // Original (malformed) preserved, fresh block appended
-    expect($result)->toContain('# >>> package-boost (managed) >>>');
-    expect($result)->toContain('# <<< package-boost (managed) <<<');
+    // Exactly the 12 canonical export-ignore entries — the variant did not become a 13th.
+    expect(substr_count($result, 'export-ignore'))->toBe(12);
+    expect(substr_count($result, '.ai/'))->toBe(1);
+});
+
+it('de-duplicates repeated foreign lines inside the block', function (): void {
+    $original = "# >>> package-boost (managed) >>>\n"
+        . "/.lpv                   export-ignore\n"
+        . "/.lpv                   export-ignore\n"
+        . "# <<< package-boost (managed) <<<\n";
+    $result = (new ManagedBlockWriter())->sync($original);
+
+    expect(substr_count($result, '/.lpv'))->toBe(1);
 });
