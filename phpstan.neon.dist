@@ -1,4 +1,5 @@
 includes:
+    - phpstan-baseline.neon
     - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/spaze/phpstan-disallowed-calls/disallowed-dangerous-calls.neon
     - vendor/spaze/phpstan-disallowed-calls/disallowed-execution-calls.neon
@@ -15,6 +16,23 @@ parameters:
 
     strictRules:
         allRules: true
+
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+
+    type_coverage:
+        return: 100
+        param: 100
+        property: 100
+        constant: 0
+        declare: 100
+
+    type_perfect:
+        null_over_false: true
+        narrow_return: true
+
+    cognitive_complexity:
+        class: 80
+        function: 20
 
     treatPhpDocTypesAsCertain: false
 
