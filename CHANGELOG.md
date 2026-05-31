@@ -5,7 +5,34 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.14.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.15.0...HEAD)
+
+## [0.15.0](https://github.com/sandermuller/package-boost-php/compare/0.14.0...0.15.0) - 2026-05-31
+
+<!-- verified-sha: b9e2ff9c2b417a94a2d0c8992f0017ccc4928bae -->
+0.15.0 narrows the `sandermuller/boost-core` constraint from `^0.12` to `^0.13`, dropping boost-core 0.12 from the supported matrix.
+
+This is a **retention-policy bump** (matrix shrink), like 0.14.0 — not the absorption of a load-bearing boost-core 0.13 feature. `package-boost-php`'s runtime behaves identically against boost-core 0.12 / 0.13.
+
+boost-core 0.13.0 ships guideline-shadow annotation — `boost where` marks a host guideline that shadows a same-named vendor guideline with `(shadows <vendor>)` and `boost doctor` reports it; that surface is diagnostic only. On the first `boost sync` against 0.13, the boost-managed `.gitignore` block also gains a `.boost/` entry.
+
+#### Upgrade
+
+Consumers on `boost-core ^0.12` must bump:
+
+```bash
+composer require sandermuller/boost-core:^0.13
+
+```
+Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
+
+### Skill + guideline content
+
+- **`writing-file-emitter`** — new emitter teardown/reaping lifecycle guidance. Returning `null` skips this sync but does **not** reap a previously-emitted file; emit through the managed write path so a forthcoming boost-core reconcile-on-sync can claim and prune the orphan; go dormant by returning `null` (throwing or disabling **preserves**, never reaps); reserved-path and first-adoption notes added.
+- **`lean-dist`** — clarifies that the `lean` validator is opt-in CI enforcement while the `gitattributes` managed block is the baseline that keeps the archive lean. Resolves a recurring "is this load-bearing or optional?" question.
+- **`foundation`** — adds an "Extending boost-core" note so a package authoring a custom `FileEmitter` knows to declare the `boost-extension` tag to pull `writing-file-emitter` (the skill is tag-gated off by default).
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.14.0...0.15.0
 
 ## [0.14.0](https://github.com/sandermuller/package-boost-php/compare/0.13.0...0.14.0) - 2026-05-30
 
@@ -22,6 +49,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 ```
 boost-core 0.12.0 ships markerless agent-guidance files — `CLAUDE.md` / `AGENTS.md` are now wholesale boost-owned and regenerated in full each sync (no `<!-- boost-core:guidelines -->` markers), with an empty-assembly guard that never blanks a non-empty guidance file. On your first `boost sync` against 0.12 the marker comments are stripped from tracked guidance files; the guideline content is preserved. See boost-core's own UPGRADING.md for details.
@@ -76,6 +104,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -106,6 +135,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -201,6 +231,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -284,6 +315,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -329,6 +361,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -354,6 +387,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
