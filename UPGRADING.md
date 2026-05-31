@@ -2,6 +2,40 @@
 
 Breaking changes per major/minor bump.
 
+## 0.14 → 0.15
+
+0.15.0 narrows the `sandermuller/boost-core` constraint from `^0.12`
+to `^0.13` — a retention-policy bump that drops `boost-core 0.12` from
+the supported matrix. As with the `0.14.0` narrowing, this is a
+deliberate maintenance choice to shrink the test surface, not the
+absorption of a load-bearing `boost-core 0.13` feature: nothing in
+0.13.0 requires a package-side code change here. `package-boost-php`'s
+runtime behaves identically against boost-core 0.12 / 0.13.
+
+### `sandermuller/boost-core: ^0.13` required
+
+If your `composer.json` requires `sandermuller/boost-core: ^0.12`,
+bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.13
+```
+
+boost-core 0.13.0 ships guideline-shadow annotation — `boost where`
+marks a host guideline that shadows a same-named vendor guideline with
+`(shadows <vendor>)`, counts it in the NOTE, resolves the vendor copy
+via `--diff=<name>`, and `boost doctor` reports it. That surface is
+diagnostic only. On your first `boost sync` against 0.13, the
+boost-managed `.gitignore` block also gains a `.boost/` entry. See
+boost-core's own UPGRADING.md for details.
+
+The package's public surface is unchanged. The `writing-file-emitter`
+and `lean-dist` skills and the `foundation` guideline gained content
+(emitter teardown/reaping lifecycle, lean-validation-is-opt-in
+clarification, and a `boost-extension` discoverability note) — additive,
+no behavioural break. If you were already on `boost-core ^0.13`, no
+action is required.
+
 ## 0.13 → 0.14
 
 0.14.0 narrows the `sandermuller/boost-core` constraint from
