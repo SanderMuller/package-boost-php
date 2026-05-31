@@ -5,7 +5,36 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.15.2...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.16.0...HEAD)
+
+## [0.16.0](https://github.com/sandermuller/package-boost-php/compare/0.15.2...0.16.0) - 2026-05-31
+
+<!-- verified-sha: bf4cb0f359a96f2907cb1230d12383d2117583ea -->
+### One-package install: the `AutoSync` façade
+
+A consumer requiring only `sandermuller/package-boost-php` already gets boost-core transitively — but the recommended auto-sync wiring referenced boost-core's `SanderMuller\BoostCore\Scripts\BoostAutoSync::run`, a transitive-dependency class. "Declare what you use" hygiene then nudged consumers to `require sandermuller/boost-core` explicitly, making a one-package install feel like two.
+
+0.16.0 closes that seam.
+
+#### Added
+
+- **`SanderMuller\PackageBoostPhp\Scripts\AutoSync`** — a thin façade over boost-core's `BoostAutoSync`, exposing both Composer-callback delegates under this package's own namespace:
+  
+  - `AutoSync::run` — `post-install-cmd` / `post-update-cmd` hook; silent on a no-op install.
+  - `AutoSync::runWithSummary` — for user-invoked scripts (e.g. `composer sync-ai`) that should always print the one-line summary.
+  
+  Delegation is total: every guard (`--no-dev` short-circuit, `BOOST_SKIP_AUTOSYNC`, the binary-not-executable skip, the failure warning) lives in boost-core and fires unchanged through the façade. A consumer now wires auto-sync while referencing only `package-boost-php`, and never needs to name `sandermuller/boost-core` in their `composer.json`.
+  
+
+#### Changed
+
+- README Install + Auto-sync sections document the one-package story and the façade wiring (`run` / `runWithSummary`).
+
+#### Upgrade
+
+Non-breaking. The previous `BoostAutoSync::run` wiring still resolves transitively. The optional swap to `AutoSync::run` (for a clean one-package install) is in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.15 → 0.16.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.15.2...0.16.0
 
 ## [0.15.2](https://github.com/sandermuller/package-boost-php/compare/0.15.1...0.15.2) - 2026-05-31
 
@@ -61,6 +90,7 @@ composer require sandermuller/boost-core:^0.13
 
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -87,6 +117,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -147,6 +178,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -177,6 +209,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -278,6 +311,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -364,6 +398,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -412,6 +447,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -437,6 +473,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
