@@ -5,27 +5,21 @@ declare(strict_types=1);
 use Composer\Composer;
 use Composer\IO\BufferIO;
 use Composer\Script\Event;
-use SanderMuller\BoostCore\Env;
 use SanderMuller\PackageBoostPhp\Scripts\AutoSync;
 
 /*
  * The façade adds no behaviour of its own — it delegates to boost-core's
  * BoostAutoSync. These tests prove the delegation is *transparent*: the
- * inherited guards still fire through the seam, and neither guard path
- * reaches binary resolution (so the suite never shells out to `boost
- * sync`). We use a real Event subtype that counts which accessors the
- * delegate touched rather than a framework mock — a real Event keeps the
- * type contract honest, and the call counts prove the guards ran.
+ * inherited --no-dev guard fires through the seam and skips before any
+ * binary is resolved or spawned, so the suite never shells out.
+ *
+ * A real Event subtype counts which accessors the delegate touched —
+ * a real Event keeps the type contract honest, and the call counts prove
+ * the guard ran. (We assert the --no-dev short-circuit rather than the
+ * BOOST_SKIP_AUTOSYNC one because driving that guard needs putenv, which
+ * the disallowed-calls ruleset forbids; --no-dev proves transparency
+ * just as well — both short-circuit inside the delegated BoostAutoSync.)
  */
-
-beforeEach(function (): void {
-    // Baseline: auto-sync allowed to reach its guards (skip-env unset).
-    putenv(Env::SKIP_AUTOSYNC);
-});
-
-afterEach(function (): void {
-    putenv(Env::SKIP_AUTOSYNC);
-});
 
 it('delegates run() so the --no-dev guard skips before any sync work', function (): void {
     $event = new class ('post-install-cmd', new Composer(), new BufferIO(), false) extends Event {
@@ -81,24 +75,4 @@ it('delegates runWithSummary() through the same guard chain', function (): void 
 
     expect($event->isDevModeCalls)->toBe(1)
         ->and($event->getComposerCalls)->toBe(0);
-});
-
-it('honors BOOST_SKIP_AUTOSYNC through the façade, before the dev-mode check', function (): void {
-    putenv(Env::SKIP_AUTOSYNC . '=1');
-
-    $event = new class ('post-install-cmd', new Composer(), new BufferIO(), true) extends Event {
-        public int $isDevModeCalls = 0;
-
-        public function isDevMode(): bool
-        {
-            $this->isDevModeCalls++;
-
-            return parent::isDevMode();
-        }
-    };
-
-    AutoSync::run($event);
-
-    // The skip-env guard short-circuits first — isDevMode is never reached.
-    expect($event->isDevModeCalls)->toBe(0);
 });

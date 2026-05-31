@@ -1,5 +1,8 @@
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-dangerous-calls.neon
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-execution-calls.neon
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-insecure-calls.neon
 
 parameters:
     tmpDir: .cache/phpstan
