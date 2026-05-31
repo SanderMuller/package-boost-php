@@ -5,7 +5,33 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.16.1...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.16.2...HEAD)
+
+## [0.16.2](https://github.com/sandermuller/package-boost-php/compare/0.16.1...0.16.2) - 2026-05-31
+
+<!-- verified-sha: 637f6a494c1f76bb7f5e8dbc178aa045492ba1c9 -->
+### Fixed — `.gitattributes` managed-block writer
+
+Edge-case correctness fixes to the block the `gitattributes` command maintains:
+
+- **Malformed-block recovery is now self-healing.** A block with an opening marker but no closing marker previously caused the next sync to *append a second block*, leaving successive syncs unstable. The writer now collapses the region into a single clean block, and `sync()` is idempotent for any input (`sync(sync(x)) === sync(x)`).
+- **The file's dominant line ending is preserved.** A CRLF-authored `.gitattributes` stays CRLF instead of being rewritten to LF; a mostly-LF file with a stray CRLF line settles to LF rather than churning every line.
+- **Whitespace-variant canonical rules are recognised, not duplicated.** A managed export-ignore entry written with different padding is treated as managed instead of being kept (and re-emitted) as a "foreign" line.
+- **Repeated foreign lines inside the block are de-duplicated.**
+
+### Added
+
+- **Test coverage for the `lean` and `gitattributes` CLI commands** — exit codes, `--check` no-write behaviour, foreign-line preservation end-to-end, and validator-binary resolution are now pinned. The test suite grows from 8 to 21.
+
+### Changed
+
+- **`lean-dist` skill** now points at the live managed block and `.lpv` as the source of truth for export-ignore entries, replacing a hard-coded list that had drifted from what the tool actually writes.
+- **README**: removed stale version pins (version-agnostic restatements).
+- **Internal**: removed an unreachable validator-binary fallback in the `lean` command.
+
+Patch release — non-breaking. The public API is unchanged; the writer simply behaves correctly on the edge cases above.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.16.1...0.16.2
 
 ## [0.16.1](https://github.com/sandermuller/package-boost-php/compare/0.16.0...0.16.1) - 2026-05-31
 
@@ -105,6 +131,7 @@ composer require sandermuller/boost-core:^0.13
 
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -131,6 +158,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -195,6 +223,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -225,6 +254,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -330,6 +360,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -418,6 +449,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -468,6 +500,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -493,6 +526,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
