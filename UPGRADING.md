@@ -2,6 +2,31 @@
 
 Breaking changes per major/minor bump.
 
+## 0.16.1 → 0.16.2
+
+> Shipped as a patch, but it carries a breaking constraint change — it
+> should have been `0.17.0`. Documented here so the migration isn't lost.
+
+0.16.2 narrows the `sandermuller/boost-core` constraint from
+`^0.13 || ^0.14 || ^0.15 || ^0.16` to `^0.16`, dropping support for
+boost-core 0.13–0.15. The package consumes only stable boost-core symbols
+(`BoostBaseCommand`, `BoostAutoSync`), and the family had converged on
+`^0.16` (boost-skills 2.0 requires it; project-boost-laravel pins it), so
+this sheds unverified support for boost-core versions no longer in use.
+
+### `sandermuller/boost-core: ^0.16` required
+
+If your `composer.json` requires `sandermuller/boost-core` below `^0.16`,
+bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.16
+```
+
+If you were already on `boost-core ^0.16`, no action is required. The
+rest of 0.16.2 (managed-block writer correctness fixes + CLI command test
+coverage) is non-breaking.
+
 ## 0.15 → 0.16
 
 0.16.0 adds a one-package auto-sync entry point. The package now ships

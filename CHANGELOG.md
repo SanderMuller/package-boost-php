@@ -29,7 +29,11 @@ Edge-case correctness fixes to the block the `gitattributes` command maintains:
 - **README**: removed stale version pins (version-agnostic restatements).
 - **Internal**: removed an unreachable validator-binary fallback in the `lean` command.
 
-Patch release — non-breaking. The public API is unchanged; the writer simply behaves correctly on the edge cases above.
+### Breaking — `sandermuller/boost-core` narrowed to `^0.16`
+
+> **Correction (post-release):** this entry originally read "patch release — non-breaking". That was inaccurate. 0.16.2 also narrowed the `sandermuller/boost-core` constraint from `^0.13 || ^0.14 || ^0.15 || ^0.16` to `^0.16`, dropping support for boost-core 0.13–0.15 — a **breaking** change that warranted a `0.17.0` bump, not a patch. The family had already converged on boost-core `^0.16`, so no current consumer is affected; a consumer pinned to `boost-core < 0.16` must upgrade it to `^0.16` for this version. See [UPGRADING](UPGRADING.md) (0.16.1 → 0.16.2).
+
+The managed-block writer correctness fixes and CLI command-test coverage above are themselves non-breaking.
 
 **Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.16.1...0.16.2
 
