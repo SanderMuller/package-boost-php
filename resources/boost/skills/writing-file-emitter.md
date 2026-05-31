@@ -73,8 +73,49 @@ Emitters are only loaded from **allowlisted vendors** (per the host's
 `boost.php` `withAllowedVendors([])` declaration). Untrusted vendors'
 emitters never instantiate.
 
+## Lifecycle: returning `null` skips, it does not reap
+
+`emit()` returning `null` skips *writing* on this sync — it does **not**
+remove a file an earlier sync already wrote. If your emitter wrote
+`.mcp.json` while an optional dependency was installed, then that
+dependency is dropped and `emit()` starts returning `null`, the earlier
+`.mcp.json` is left behind: stale, possibly pointing at tooling that no
+longer exists.
+
+boost-core does not reap it automatically today, and there is no
+uninstall hook to react to — boost-core retired its Composer plugin, so
+no `PACKAGE_UNINSTALL` event fires. An emitter's output isn't even
+tracked in the sync manifest yet (only guidance, skills, and commands
+are recorded), which is precisely why nothing reaps it. A sync-time
+reconcile that records emitter-emitted paths and prunes the orphaned
+ones (a boost-owned path that drops out of the intended set on a later
+sync) is in progress upstream; track boost-core for when it lands.
+Design for it now:
+
+- **Emit through the managed write path only.** Return an `EmittedFile`
+  under the project root and let boost-core write it — never write the
+  file yourself out-of-band. Only managed, boost-owned paths can be
+  recorded in the manifest and later reaped; a file written outside that
+  path is invisible to reconcile and will be left stale.
+- **Do not hand-roll teardown.** There is no `emit()` counterpart called
+  on removal, and stashing cleanup state on the instance does not work
+  (`emit()` runs once per sync, never on uninstall). Model removal as
+  "next sync, this path is no longer in the intended set," not as an
+  event you handle.
+- **Go dormant by returning `null`, never by throwing.** Reconcile will
+  treat a clean `null` as "dormant — reap the orphan" but an `errored`
+  result (a thrown `emit()`) as a transient failure that must *not*
+  reap — a half-broken sync must never delete a still-wanted file. So
+  throwing to signal "remove my file" leaves it orphaned; return `null`
+  to deregister the path.
+
 ## Anti-patterns
 
+- **Assuming a skipped emit cleans up after itself.** Returning `null`
+  does not delete a previously-emitted file (see Lifecycle above). Until
+  boost-core's reconcile lands, a dropped-dependency emitter orphans its
+  file — emit boost-owned paths only, and tell consumers the manual
+  removal step if one is needed.
 - **Expensive constructors.** The constructor runs during discovery —
   as soon as an allowlisted vendor's emitter is found — before `emit()`
   is ever called. There is no separate guard method; do skip-checks
