@@ -57,6 +57,25 @@ Add to CI:
   run: vendor/bin/package-boost-php lean
 ```
 
+## Validation is opt-in; the managed block is the baseline
+
+Two distinct tools, two roles — don't conflate them:
+
+- `vendor/bin/package-boost-php gitattributes` writes and refreshes the
+  managed block. This is what actually makes the archive lean, and it
+  runs as part of the normal package-boost workflow. Baseline, not
+  optional.
+- `vendor/bin/package-boost-php lean` (the `stolt/lean-package-validator`
+  wrapper) only *checks* that the block stays complete. It is opt-in:
+  wire it into CI if you want enforcement, but a package whose managed
+  block is correct ships lean whether or not the validator ever runs.
+  There is no default `.lpv` / composer-script wiring — add it only if
+  you want the stricter gate.
+
+If your `.gitattributes` export-ignore is already covered by the managed
+block (e.g. confirmed by a repo-init audit), the validator is
+redundant-but-harmless, not a missing requirement.
+
 ## Anti-patterns
 
 - Editing `.gitattributes` outside the managed block to add boost-managed
