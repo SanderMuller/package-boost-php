@@ -62,9 +62,9 @@ Add to CI:
 Two distinct tools, two roles — don't conflate them:
 
 - `vendor/bin/package-boost-php gitattributes` writes and refreshes the
-  managed block. This is what actually makes the archive lean, and it
-  runs as part of the normal package-boost workflow. Baseline, not
-  optional.
+  managed block. This is what actually makes the archive lean; you run
+  it during setup and whenever a new top-level path needs excluding.
+  Baseline, not optional.
 - `vendor/bin/package-boost-php lean` (the `stolt/lean-package-validator`
   wrapper) only *checks* that the block stays complete. It is opt-in:
   wire it into CI if you want enforcement, but a package whose managed

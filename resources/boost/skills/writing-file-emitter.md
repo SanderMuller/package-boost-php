@@ -88,13 +88,13 @@ no `PACKAGE_UNINSTALL` event fires. An emitter's output isn't even
 tracked in the sync manifest yet (only guidance, skills, and commands
 are recorded), which is precisely why nothing reaps it. A sync-time
 reconcile that records emitter-emitted paths and prunes the orphaned
-ones (a boost-owned path that drops out of the intended set on a later
+ones (a boost-managed path that drops out of the intended set on a later
 sync) is in progress upstream; track boost-core for when it lands.
 Design for it now:
 
 - **Emit through the managed write path only.** Return an `EmittedFile`
   under the project root and let boost-core write it — never write the
-  file yourself out-of-band. Only managed, boost-owned paths can be
+  file yourself out-of-band. Only paths boost-core writes for you can be
   recorded in the manifest and later reaped; a file written outside that
   path is invisible to reconcile and will be left stale.
 - **Do not hand-roll teardown.** There is no `emit()` counterpart called
@@ -102,20 +102,27 @@ Design for it now:
   (`emit()` runs once per sync, never on uninstall). Model removal as
   "next sync, this path is no longer in the intended set," not as an
   event you handle.
-- **Go dormant by returning `null`, never by throwing.** Reconcile will
-  treat a clean `null` as "dormant — reap the orphan" but an `errored`
-  result (a thrown `emit()`) as a transient failure that must *not*
-  reap — a half-broken sync must never delete a still-wanted file. So
-  throwing to signal "remove my file" leaves it orphaned; return `null`
-  to deregister the path.
+- **Go dormant by returning `null` — not by throwing, not by disabling.**
+  The forthcoming reconcile reaps on a clean `null` (dormant), but
+  *preserves* (never reaps) in two cases: an `errored` result (a thrown
+  `emit()`) — a half-broken sync must not delete a still-wanted file —
+  and an emitter switched off with `withDisabledEmitters()` — disabling
+  means "stop regenerating," not "delete." Throwing or disabling to
+  signal "remove my file" leaves it in place; return `null` to
+  deregister the path.
+
+If your emitter takes over a file that already exists and isn't
+boost-owned, the forthcoming reconcile records it and *warns* on the
+first sync rather than silently claiming it — it only becomes
+reap-eligible on a later dormancy.
 
 ## Anti-patterns
 
 - **Assuming a skipped emit cleans up after itself.** Returning `null`
   does not delete a previously-emitted file (see Lifecycle above). Until
   boost-core's reconcile lands, a dropped-dependency emitter orphans its
-  file — emit boost-owned paths only, and tell consumers the manual
-  removal step if one is needed.
+  file — emit through the managed write path only, and tell consumers
+  the manual removal step if one is needed.
 - **Expensive constructors.** The constructor runs during discovery —
   as soon as an allowlisted vendor's emitter is found — before `emit()`
   is ever called. There is no separate guard method; do skip-checks
@@ -124,6 +131,12 @@ Design for it now:
 - **Writing outside the project root.** Path traversal (`../`,
   absolute paths) is rejected by `FileWriter`. Always emit a relative
   path under the project root.
+- **Emitting a reserved path.** Paths boost-core owns are off-limits to
+  emitters — agent-guidance files (`CLAUDE.md`, `AGENTS.md`,
+  `GEMINI.md`), `.gitignore`, `.ai/`, `resources/boost/`, agent
+  skill/command roots, or a wrapper-claimed path. The forthcoming
+  reconcile rejects these with a diagnostic; treat them as off-limits
+  now. Emit to a path that is yours alone.
 - **Assuming `emit()` runs more than once.** It is called exactly once
   per sync. Don't stash state on the instance expecting a later call —
   there isn't one. Do all detection (`$ctx->packages->has(...)`) inline.
