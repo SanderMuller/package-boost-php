@@ -5,7 +5,20 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.15.1...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.15.2...HEAD)
+
+## [0.15.2](https://github.com/sandermuller/package-boost-php/compare/0.15.1...0.15.2) - 2026-05-31
+
+<!-- verified-sha: 6c7d5a797a99e43c8eb222cfd9829fded7c94b37 -->
+### `sandermuller/boost-core` widened to accept `^0.15`
+
+0.15.2 widens the boost-core constraint from `^0.13 || ^0.14` to `^0.13 || ^0.14 || ^0.15` — a non-breaking "track latest" bump that absorbs boost-core 0.15.0 without dropping support for 0.13 or 0.14.
+
+boost-core 0.15.0 is the conventions-inlining engine (Phase 1): render-time `<!--boost:conv-->` tokens that resolve project-convention values into generated skills/guidelines, so the always-loaded `## Project Conventions` block can drop once a consumer's skills are fully token-based. It is **non-load-bearing for `package-boost-php`** — this package carries no convention-slot references, declares no `withConventions([...])`, and ships no wrapper, so the inliner finds nothing to resolve and the drop gate never fires. Dogfood output is byte-identical to boost-core 0.14.
+
+No code, public-API, or skill changes. If you stay on `boost-core ^0.13` or `^0.14`, no action is required.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.15.1...0.15.2
 
 ## [0.15.1](https://github.com/sandermuller/package-boost-php/compare/0.15.0...0.15.1) - 2026-05-31
 
@@ -47,6 +60,7 @@ Consumers on `boost-core ^0.12` must bump:
 composer require sandermuller/boost-core:^0.13
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -73,6 +87,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -131,6 +146,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -161,6 +177,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -260,6 +277,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -345,6 +363,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -392,6 +411,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -417,6 +437,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
