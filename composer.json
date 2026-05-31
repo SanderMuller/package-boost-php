@@ -29,6 +29,7 @@
         "symfony/process": "^7.0||^8.0"
     },
     "require-dev": {
+        "composer/composer": "^2.7",
         "laravel/pao": "^1.0",
         "laravel/pint": "^1.29",
         "mrpunyapal/rector-pest": "^0.2.15",
@@ -63,10 +64,10 @@
     ],
     "scripts": {
         "post-install-cmd": [
-            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
+            "SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"
         ],
         "post-update-cmd": [
-            "SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"
+            "SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"
         ],
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "phpstan-simplified": "vendor/bin/phpstan analyse --memory-limit=2G --error-format symplify",

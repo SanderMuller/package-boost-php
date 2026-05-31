@@ -52,7 +52,7 @@ The `readme`, `release-notes`, and `upgrading` skills moved to [`sandermuller/bo
 composer require --dev sandermuller/package-boost-php
 ```
 
-PHP 8.3+ required. Pulls in `sandermuller/boost-core` (the sync engine) and `stolt/lean-package-validator` (the `lean` command's checker).
+PHP 8.3+ required. `sandermuller/boost-core` (the sync engine) and `stolt/lean-package-validator` (the `lean` command's checker) come in transitively — do not `require sandermuller/boost-core` separately, it resolves through this package. One package is the whole install; the auto-sync callback (below) lives under this package's own namespace so your `composer.json` never names the transitive dependency.
 
 ## First run
 
@@ -125,10 +125,12 @@ To re-sync on every `composer install` / `composer update`, wire the callback in
 
 ```json
 "scripts": {
-    "post-install-cmd": ["SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"],
-    "post-update-cmd": ["SanderMuller\\BoostCore\\Scripts\\BoostAutoSync::run"]
+    "post-install-cmd": ["SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"],
+    "post-update-cmd": ["SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"]
 }
 ```
+
+The callback lives under this package's own namespace, so you reference only `package-boost-php` and never need to `require sandermuller/boost-core` separately — one package is the whole install. `AutoSync::run` delegates to boost-core's engine and inherits every guard unchanged (it's silent on a no-op install, skips on `--no-dev`, and honours `BOOST_SKIP_AUTOSYNC`). For a script you invoke yourself (e.g. `composer sync-ai`) where silence reads as nothing happening, use `SanderMuller\PackageBoostPhp\Scripts\AutoSync::runWithSummary` instead — it always prints the one-line summary.
 
 `BOOST_SKIP_AUTOSYNC=1` disables the callback.
 
