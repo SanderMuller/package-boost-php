@@ -8,6 +8,8 @@
 
 AI agent skills, guidelines, and `.gitattributes` commands for framework-agnostic Composer package authors. Sibling of [`sandermuller/package-boost-laravel`](https://github.com/sandermuller/package-boost-laravel) (Laravel-package flavor); both ride the [`sandermuller/boost-core`](https://github.com/sandermuller/boost-core) sync engine.
 
+![overview image](overview.png)
+
 > Where [`laravel/boost`](https://github.com/laravel/boost) ships Laravel application guidelines, `package-boost-php` ships package-author CLI infrastructure (`vendor/bin/package-boost-php lean` + `gitattributes`) and skill-authoring tooling for the boost ecosystem. Framework-agnostic, no Laravel dependency. The release-flow content skills (`readme`, `release-notes`, `upgrading`) ship from [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) under the `release-automation` tag.
 
 ## Which package fits your role?
