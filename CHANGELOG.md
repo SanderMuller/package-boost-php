@@ -5,7 +5,48 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.16.3...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.17.0...HEAD)
+
+## [0.17.0](https://github.com/sandermuller/package-boost-php/compare/0.16.3...0.17.0) - 2026-06-02
+
+<!-- verified-sha: ecfa2812bc3d9b81f97bae2640f6e4820f182f3e -->
+### Breaking — `sandermuller/boost-core` floor raised to `^0.18`
+
+The `sandermuller/boost-core` constraint narrows from
+`^0.16 || ^0.17 || ^0.18` to `^0.18 || ^0.19`, dropping support for
+boost-core 0.16 and 0.17.
+
+This package now uses boost-core's `.config/` layout — config at
+`.config/boost.php`, sync manifest under `.config/boost/`. Config-path
+resolution arrived in boost-core 0.17, but the manifest relocation from
+root `.boost/` to `.config/boost/` only landed in 0.18, so 0.18 is the
+floor where the `.config/` layout is fully consistent.
+
+If your `composer.json` requires boost-core below `^0.18`, bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.18
+
+```
+Already on `boost-core ^0.18` or later? No action needed. See
+[UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md)
+for the full migration note.
+
+### Changed
+
+- **Dogfood config moved to `.config/boost.php`.** This repo's own boost
+  config now lives under `.config/` instead of the repo root, demonstrating
+  the layout boost-core 0.18+ supports. boost-core resolves either location
+  (root `boost.php` or `.config/boost.php`) — but not both at once, or it
+  fails loud. Consumers may relocate their own config the same way; a root
+  `boost.php` keeps working unchanged.
+- **`stolt/lean-package-validator` widened to `^5.7 || ^6.0`**, allowing
+  consumers to resolve the 6.x line.
+
+No source/API changes — the package's public surface is unchanged. This
+release is constraint and configuration-layout only.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.16.3...0.17.0
 
 ## [0.16.3](https://github.com/sandermuller/package-boost-php/compare/0.16.2...0.16.3) - 2026-06-02
 
@@ -150,6 +191,7 @@ composer require sandermuller/boost-core:^0.13
 
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -176,6 +218,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -244,6 +287,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -274,6 +318,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -383,6 +428,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -473,6 +519,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -525,6 +572,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -550,6 +598,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
