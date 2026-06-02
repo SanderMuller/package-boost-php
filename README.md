@@ -69,7 +69,7 @@ Generated agent dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) are added to `.gi
 
 ## `boost.php` config
 
-The canonical example is this repo's own dogfood `boost.php`:
+The canonical example is this repo's own dogfood config (kept at `.config/boost.php`; root `boost.php` works too):
 
 ```php
 <?php declare(strict_types=1);

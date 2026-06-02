@@ -19,7 +19,7 @@ GEMINI.md               export-ignore
 .gitignore              export-ignore
 .lpv                    export-ignore
 .phpunit.cache          export-ignore
-boost.php               export-ignore
+.config/                export-ignore
 CHANGELOG.md            export-ignore
 composer.lock           export-ignore
 phpstan-baseline.neon   export-ignore

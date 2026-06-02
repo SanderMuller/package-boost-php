@@ -2,6 +2,37 @@
 
 Breaking changes per major/minor bump.
 
+## 0.16 → 0.17
+
+0.17.0 narrows the `sandermuller/boost-core` constraint from
+`^0.16 || ^0.17 || ^0.18 || ^0.19` to `^0.18 || ^0.19`, dropping support
+for boost-core 0.16 and 0.17. This package now dogfoods the `.config/`
+layout — config at `.config/boost.php`, sync manifest under
+`.config/boost/`. Config resolution arrived in boost-core 0.17, but the
+manifest relocation from root `.boost/` to `.config/boost/` landed in
+0.18; on 0.17 a sync still writes `.boost/` and rewrites the managed
+`.gitignore` block accordingly, so the committed `.config/` layout is only
+consistent on boost-core 0.18+.
+
+### `sandermuller/boost-core: ^0.18` required
+
+If your `composer.json` requires `sandermuller/boost-core` below `^0.18`,
+bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.18
+```
+
+If you were already on `boost-core ^0.18` or later, no action is required.
+
+### Optional: move your config to `.config/boost.php`
+
+With boost-core 0.18+ guaranteed, you may relocate your own `boost.php`
+into `.config/boost.php` to keep the repo root tidy. boost-core resolves
+either location (root or `.config/`), but **not both** — keep exactly one
+or it fails loud. This is optional; a root `boost.php` keeps working
+unchanged.
+
 ## 0.16.1 → 0.16.2
 
 > Shipped as a patch, but it carries a breaking constraint change — it

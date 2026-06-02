@@ -23,8 +23,8 @@
     ],
     "require": {
         "php": "^8.3",
-        "sandermuller/boost-core": "^0.16||^0.17||^0.18",
-        "stolt/lean-package-validator": "^5.7",
+        "sandermuller/boost-core": "^0.18||^0.19",
+        "stolt/lean-package-validator": "^5.7||^6.0",
         "symfony/console": "^7.0||^8.0",
         "symfony/process": "^7.0||^8.0"
     },
