@@ -5,7 +5,57 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.17.0...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.18.0...HEAD)
+
+## [0.18.0](https://github.com/sandermuller/package-boost-php/compare/0.17.0...0.18.0) - 2026-06-03
+
+<!-- verified-sha: 7b15cd02bbb30285c773efed5af9222cb42c2efc -->
+### Breaking — `sandermuller/boost-core` floor raised to `^0.20`
+
+The `sandermuller/boost-core` constraint narrows from `^0.18 || ^0.19`
+to `^0.20`, dropping support for boost-core 0.18 and 0.19.
+
+boost-core 0.20 makes the `BoostConfig` builder methods array-typed. The
+`withTags()` variadic form fatals on 0.20, and the new array form fatals
+on 0.18/0.19 — the two styles cannot be expressed compatibly in a single
+`boost.php`, so the floor moves to 0.20 in lockstep.
+
+If your `composer.json` requires boost-core below `^0.20`, bump it:
+
+```bash
+composer require sandermuller/boost-core:^0.20
+
+```
+#### `withTags()` is now array-typed
+
+Update your `boost.php` (or `.config/boost.php`) to pass an array:
+
+```diff
+-    ->withTags(
+-        Tag::Php,
+-        'release-automation',
+-    );
++    ->withTags([
++        Tag::Php,
++        'release-automation',
++    ]);
+
+```
+Only `withTags()` callers using the variadic form need the change —
+`withAgents()`, `withAllowedVendors()`, `withExcludedSkills()`,
+`withRemoteSkills()`, and `withConventions()` already took arrays. See
+[UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md)
+for the full note.
+
+### Changed
+
+- **`minimum-stability` set to `stable`** (was `dev`), with
+  `prefer-stable: true` unchanged. No dependency requires dev stability.
+
+No source/API changes — the package's public surface is unchanged. This
+release is constraint and configuration only.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.17.0...0.18.0
 
 ## [0.17.0](https://github.com/sandermuller/package-boost-php/compare/0.16.3...0.17.0) - 2026-06-02
 
@@ -26,6 +76,7 @@ If your `composer.json` requires boost-core below `^0.18`, bump it:
 
 ```bash
 composer require sandermuller/boost-core:^0.18
+
 
 ```
 Already on `boost-core ^0.18` or later? No action needed. See
@@ -192,6 +243,7 @@ composer require sandermuller/boost-core:^0.13
 
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -218,6 +270,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -288,6 +341,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -318,6 +372,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -429,6 +484,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -520,6 +576,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -573,6 +630,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -598,6 +656,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
