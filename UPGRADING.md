@@ -2,6 +2,45 @@
 
 Breaking changes per major/minor bump.
 
+## 0.17 → 0.18
+
+0.18.0 narrows the `sandermuller/boost-core` constraint from
+`^0.18 || ^0.19` to `^0.20`, dropping support for boost-core 0.18 and
+0.19. boost-core 0.20 makes a breaking change to the `boost.php` config
+API that cannot be expressed compatibly across the 0.19/0.20 boundary, so
+the floor moves to 0.20 in lockstep.
+
+### `sandermuller/boost-core: ^0.20` required
+
+Bump your constraint:
+
+```bash
+composer require sandermuller/boost-core:^0.20
+```
+
+### boost-core 0.20: `withTags()` is now array-typed
+
+boost-core 0.20 changed every `BoostConfig` builder method — including
+`withTags()` — to take a single `array` argument. The previous variadic
+form fatals on 0.20. Update your `boost.php` (or `.config/boost.php`):
+
+```diff
+-    ->withTags(
+-        Tag::Php,
+-        'release-automation',
+-    );
++    ->withTags([
++        Tag::Php,
++        'release-automation',
++    ]);
+```
+
+`withAgents()`, `withAllowedVendors()`, `withExcludedSkills()`,
+`withRemoteSkills()`, and `withConventions()` already took arrays — only
+`withTags()` callers using the variadic form need the change. The array
+form fatals on boost-core 0.18/0.19, so make this edit and the constraint
+bump together.
+
 ## 0.16 → 0.17
 
 0.17.0 narrows the `sandermuller/boost-core` constraint from
