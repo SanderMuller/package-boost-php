@@ -5,7 +5,29 @@ All notable changes to `sandermuller/package-boost-php` will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.19.1...HEAD)
+## [Unreleased](https://github.com/sandermuller/package-boost-php/compare/0.20.0...HEAD)
+
+## [0.20.0](https://github.com/sandermuller/package-boost-php/compare/0.19.1...0.20.0) - 2026-06-04
+
+<!-- verified-sha: b15d7eb21c2a956fe7028e43035027704d286ba6 -->
+### Changed
+
+- **Skill sources moved to directory form** (`<name>/SKILL.md`) — the
+  shape boost-core emits and the reference catalogs all use. The three
+  shipped skills (`lean-dist`, `skill-authoring`, `writing-file-emitter`)
+  are now authored as directories; guidelines stay flat. **No consumer
+  impact** — boost-core discovers skills by name and the emitted `SKILL.md`
+  content is unchanged; this is authoring uniformity, and boost-core
+  accepts both forms.
+- **`skill-authoring` skill** now documents the directory-form rule, and
+  its frontmatter `name` guidance is corrected for directory-form skills
+  (the `name` matches the skill's directory, not the literal `SKILL`
+  filename).
+
+Non-breaking — skill-source layout + authoring guidance. The set of
+shipped skills, their names, and their emitted output are unchanged.
+
+**Full Changelog**: https://github.com/SanderMuller/package-boost-php/compare/0.19.1...0.20.0
 
 ## [0.19.1](https://github.com/sandermuller/package-boost-php/compare/0.19.0...0.19.1) - 2026-06-04
 
@@ -90,6 +112,7 @@ composer require sandermuller/boost-core:^0.20
 
 
 
+
 ```
 #### `withTags()` is now array-typed
 
@@ -104,6 +127,7 @@ Update your `boost.php` (or `.config/boost.php`) to pass an array:
 +        Tag::Php,
 +        'release-automation',
 +    ]);
+
 
 
 
@@ -144,6 +168,7 @@ If your `composer.json` requires boost-core below `^0.18`, bump it:
 
 ```bash
 composer require sandermuller/boost-core:^0.18
+
 
 
 
@@ -318,6 +343,7 @@ composer require sandermuller/boost-core:^0.13
 
 
 
+
 ```
 Full note: [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md) 0.14 → 0.15.
 
@@ -344,6 +370,7 @@ Consumers on `boost-core ^0.10` or `^0.11` must bump:
 
 ```bash
 composer require sandermuller/boost-core:^0.12
+
 
 
 
@@ -422,6 +449,7 @@ composer require sandermuller/boost-core:^0.10
 
 
 
+
 ```
 If you were already on `boost-core ^0.10`, no action is required.
 
@@ -452,6 +480,7 @@ No code or API changes in this package — `BoostBaseCommand` is the only boost-
 
 ```bash
 composer require sandermuller/boost-core:^0.9
+
 
 
 
@@ -571,6 +600,7 @@ composer require --dev "sandermuller/boost-skills:^1.6"
 
 
 
+
 ```
 Then add `'sandermuller/boost-skills'` to `withAllowedVendors([...])` and `'release-automation'` to `withTags(...)` in your `boost.php`. Full migration note + overlap-window `withExcludedSkills` workaround in [UPGRADING.md](https://github.com/sandermuller/package-boost-php/blob/main/UPGRADING.md).
 
@@ -666,6 +696,7 @@ Widens the `sandermuller/boost-core` constraint to `^0.7`. boost-core 0.7.0 is b
   
   
   
+  
   ```
   Consumers who don't get nothing — the guideline never enters their CLAUDE.md / AGENTS.md. The `foundation` guideline stays untagged and always ships.
   
@@ -723,6 +754,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
     
     
     
+    
     ```
     A dependency's `post-install-cmd` does not fire in a consuming project — only the root package's scripts run — so this must live in your `composer.json`. Otherwise, run `vendor/bin/boost sync` yourself (e.g. in CI). `BOOST_SKIP_AUTOSYNC=1` disables the callback.
     
@@ -748,6 +780,7 @@ See [UPGRADING.md](UPGRADING.md) for the full 0.6 → 0.7 migration.
   
   ```php
   ->withTags('boost-extension')
+  
   
   
   
