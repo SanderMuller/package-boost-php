@@ -23,6 +23,8 @@ use SanderMuller\BoostCore\Scripts\BoostAutoSync;
  * `(Event): void` Composer-callback signatures) as semver-stable
  * delegation targets and evolves them only additively, so this façade is
  * safe to expose as stable public API.
+ *
+ * @api
  */
 final class AutoSync
 {

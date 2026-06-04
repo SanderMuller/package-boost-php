@@ -16,6 +16,10 @@ use Symfony\Component\Process\Process;
  *
  * Delegates to `vendor/bin/lean-package-validator validate`. Thin wrapper
  * that finds the binary, runs it, surfaces exit code via SymfonyStyle.
+ *
+ * @internal Wired by `bin/package-boost-php`. The CLI invocation contract
+ * (command name, options, exit codes — see PUBLIC_API.md) is the frozen
+ * surface, not this class.
  */
 final class LeanCommand extends BoostBaseCommand
 {

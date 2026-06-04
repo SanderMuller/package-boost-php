@@ -136,6 +136,10 @@ The callback lives under this package's own namespace, so you reference only `pa
 
 `BOOST_SKIP_AUTOSYNC=1` disables the callback.
 
+## Public API
+
+The semver-protected surface — the `AutoSync` composer-hook façade, the `bin/package-boost-php` CLI contract, and the managed-block marker format — is documented in [PUBLIC_API.md](PUBLIC_API.md). Everything else is `@internal`.
+
 ## Testing
 
 ```bash

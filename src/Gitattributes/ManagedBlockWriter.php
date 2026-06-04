@@ -19,6 +19,10 @@ namespace SanderMuller\PackageBoostPhp\Gitattributes;
  * including malformed blocks (a stray open marker with no close is
  * self-healed in place rather than accreting a second block). The file's
  * dominant line ending (LF or CRLF) is preserved.
+ *
+ * @internal Engine behind the `gitattributes` command. The marker FORMAT
+ * (BLOCK_START / BLOCK_END) is a contract — see PUBLIC_API.md — but this
+ * class is not: drive it via the command, do not import it.
  */
 final class ManagedBlockWriter
 {

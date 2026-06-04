@@ -45,6 +45,10 @@ parameters:
             path: tests/*
             reportUnmatched: false
         -
+            identifier: new.internalClass
+            path: tests/*
+            reportUnmatched: false
+        -
             identifier: property.notFound
             path: tests/*
             reportUnmatched: false

@@ -20,6 +20,10 @@ use Throwable;
  * the declared list), leaves all other lines in place. This lets repo-init
  * (and any other tool) append additional export-ignore entries inside the
  * same managed block — foreign lines are preserved across syncs.
+ *
+ * @internal Wired by `bin/package-boost-php`. The CLI invocation contract
+ * (command name, options, exit codes — see PUBLIC_API.md) is the frozen
+ * surface, not this class.
  */
 final class GitattributesCommand extends BoostBaseCommand
 {
