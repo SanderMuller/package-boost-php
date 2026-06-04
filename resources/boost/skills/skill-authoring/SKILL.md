@@ -17,8 +17,10 @@ metadata:
 ## Frontmatter shape
 
 Required:
-- `name` — kebab-case slug. Must match the filename (without `.md`) unless
-  overridden explicitly.
+- `name` — kebab-case slug. Must match the skill's DIRECTORY name (the
+  `<name>` in `<name>/SKILL.md`), not the literal `SKILL` filename — e.g.
+  `resources/boost/skills/lean-dist/SKILL.md` declares `name: lean-dist`.
+  (A legacy flat `<name>.md` matches its filename without `.md`.)
 - `description` — single-sentence summary. AI agents read this to decide
   when to load the skill, so make it specific.
 
@@ -61,12 +63,23 @@ metadata:
 
 | Where you author | Who sees it |
 |---|---|
-| `.ai/skills/foo.md` | Just this project |
-| `resources/boost/skills/foo.md` (in a vendor package) | Any host project that allowlists this vendor |
+| `.ai/skills/foo/SKILL.md` | Just this project |
+| `resources/boost/skills/foo/SKILL.md` (in a vendor package) | Any host project that allowlists this vendor |
 
 Pick one. Don't author the same skill in both. Host always wins on
 collision; vendor-vs-vendor collisions are validation errors unless
 `--force` is set.
+
+### File layout — directory form, not flat
+
+Author each skill as `<name>/SKILL.md` (directory form), not flat
+`<name>.md`. boost-core EMITS the directory form, the reference catalogs
+(boost-skills, lean-package-validator, project-boost) all use it, and it
+future-proofs multi-file skills (a skill can ship sibling assets next to
+its `SKILL.md`). boost-core accepts both forever, so this is authoring
+uniformity, not correctness — but new skills should be directory-form.
+Guidelines stay single flat `.md` files (`resources/boost/guidelines/foo.md`);
+the directory rule is skills-only.
 
 ## Body content
 
