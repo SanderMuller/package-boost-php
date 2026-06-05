@@ -2,6 +2,30 @@
 
 Breaking changes per major/minor bump.
 
+## 0.20 → 1.0
+
+First SemVer-stable release. The public surface declared in
+[PUBLIC_API.md](PUBLIC_API.md) — the `AutoSync` composer-hook façade, the
+`bin/package-boost-php` CLI contract, and the managed-block marker format —
+is now locked for the `1.x` line. Everything marked `@internal` remains
+free to change.
+
+### `sandermuller/boost-core: ^1.0` required
+
+1.0.0 narrows the `sandermuller/boost-core` constraint from
+`^0.20 || ^0.21 || ^0.22 || ^0.23` to `^1.0`, dropping support for the
+boost-core 0.x line. boost-core 1.0.0 is a drop-in over 0.23.3 (no API
+break), so the bump is mechanical:
+
+```bash
+composer require sandermuller/boost-core:^1.0
+```
+
+If you were already on boost-core 0.23.x, 1.0.0 changes nothing about how
+this package behaves — the surfaces it consumes (the `BoostAutoSync` hooks,
+the `BoostBaseCommand` `@api` helpers, the `boost.php` authoring API) are
+frozen and unchanged. No other migration is required.
+
 ## 0.17 → 0.18
 
 0.18.0 narrows the `sandermuller/boost-core` constraint from
