@@ -74,7 +74,7 @@ collision; vendor-vs-vendor collisions are validation errors unless
 
 Author each skill as `<name>/SKILL.md` (directory form), not flat
 `<name>.md`. boost-core EMITS the directory form, the reference catalogs
-(boost-skills, lean-package-validator, project-boost) all use it, and it
+(boost-skills, lean-package-validator, project-boost-php) all use it, and it
 future-proofs multi-file skills (a skill can ship sibling assets next to
 its `SKILL.md`). boost-core accepts both forever, so this is authoring
 uniformity, not correctness — but new skills should be directory-form.
