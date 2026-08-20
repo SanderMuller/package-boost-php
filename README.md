@@ -8,97 +8,57 @@
 
 AI agent skills, guidelines, and `.gitattributes` commands for framework-agnostic Composer package authors. Sibling of [`sandermuller/package-boost-laravel`](https://github.com/sandermuller/package-boost-laravel) (Laravel-package flavor); both ride the [`sandermuller/boost-core`](https://github.com/sandermuller/boost-core) sync engine.
 
+**Documentation: <https://sandermuller.github.io/boost-core/packages/package-boost-php/>**
+
 ![overview image](overview.png)
 
-> Where [`laravel/boost`](https://github.com/laravel/boost) ships Laravel application guidelines, `package-boost-php` ships package-author CLI infrastructure (`vendor/bin/package-boost-php lean` + `gitattributes`) and skill-authoring tooling for the boost ecosystem. Framework-agnostic, no Laravel dependency. The release-flow content skills (`readme`, `release-notes`, `upgrading`) ship from [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) under the `release-automation` tag.
-
-## Which package fits your role?
-
-| You're building                           | Install                                                                                       | Ships                                                                                     |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| A PHP application (not a package)         | [`sandermuller/project-boost-php`](https://github.com/sandermuller/project-boost-php)         | App-dev skills: dependency injection, legacy coexistence, a lean foundation               |
-| A Laravel application                     | [`sandermuller/project-boost-laravel`](https://github.com/sandermuller/project-boost-laravel) | `laravel/boost` MCP coexistence + nine-agent fanout + tag filter + remote skills          |
-| **A framework-agnostic Composer package** | **[`sandermuller/package-boost-php`](https://github.com/sandermuller/package-boost-php)**     | **Package-author skills + `lean` / `gitattributes` commands  ← you are here**             |
-| A Laravel package                         | [`sandermuller/package-boost-laravel`](https://github.com/sandermuller/package-boost-laravel) | Laravel-package skills + `McpJsonEmitter`                                                 |
-| Your own skill bundle, or custom tooling  | [`sandermuller/boost-core`](https://github.com/sandermuller/boost-core)                       | The sync engine. You supply the skills.                                                   |
+> Where [`laravel/boost`](https://github.com/laravel/boost) ships Laravel
+> application guidelines, this package ships package-author CLI infrastructure
+> and skill-authoring tooling. Framework-agnostic, no Laravel dependency. Not
+> sure which family member fits? The
+> [picker](https://sandermuller.github.io/boost-core/guide/which-package) decides
+> it in two questions.
 
 ## What you get
 
-**Two CLI commands** — zero-overlap with `laravel/boost`. Both target `.gitattributes`, the file that controls what ends up in the Composer archive.
+**Two CLI commands.** Both target `.gitattributes`, the file that controls what
+ends up in the Composer archive. Neither overlaps with `laravel/boost`.
 
-| Command                                      | Purpose                                                                                                                            |
-|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| `vendor/bin/package-boost-php lean`          | Validate `.gitattributes` excludes non-shipping paths (tests, fixtures, CI configs, `.ai/`). Wraps `stolt/lean-package-validator`. |
-| `vendor/bin/package-boost-php gitattributes` | Maintain the `# >>> package-boost (managed) >>>` block. Preserves foreign lines added by other tools.                              |
+| Command | Purpose |
+|---|---|
+| `vendor/bin/package-boost-php lean` | Check that `.gitattributes` excludes non-shipping paths (tests, fixtures, CI configs, `.ai/`). Wraps `stolt/lean-package-validator` |
+| `vendor/bin/package-boost-php gitattributes` | Maintain the `# >>> package-boost (managed) >>>` block. Foreign lines added by other tools are preserved |
 
-**Two guidelines** — pinned context for AI agents working in a package codebase.
+**Two guidelines.**
 
-| Guideline             | Scope                                                                                              | Tag                  |
-|-----------------------|----------------------------------------------------------------------------------------------------|----------------------|
-| `foundation`          | Package-not-an-app rules: no `app/` / `.env`, public API is semver-governed, tests are the spec.   | —                    |
-| `release-automation`  | CHANGELOG-via-CI + release-notes-in-`internal/` conventions.                                       | `release-automation` |
+| Guideline | Scope | Tag |
+|---|---|---|
+| `foundation` | Package-is-not-an-app rules: no `app/` or `.env`, the public API is semver-governed, tests are the spec | — |
+| `release-automation` | CHANGELOG-via-CI and release-notes-in-`internal/` conventions | `release-automation` |
 
-**Three skills** — on-demand workflows for package development.
+**Three skills.**
 
-| Skill                    | When it loads                                                          | Tag                  |
-|--------------------------|------------------------------------------------------------------------|----------------------|
-| `lean-dist`              | Keeping the Composer archive lean via `.gitattributes` export-ignore.  | —                    |
-| `skill-authoring`        | Authoring or editing AI skills for the boost family.                   | `boost-extension`    |
-| `writing-file-emitter`   | Implementing a custom `FileEmitter` for boost-core (`.mcp.json` etc.). | `boost-extension`    |
+| Skill | When it loads | Tag |
+|---|---|---|
+| `lean-dist` | Keeping the Composer archive lean with `.gitattributes` export-ignore | — |
+| `skill-authoring` | Authoring or editing AI skills for the boost family | `boost-extension` |
+| `writing-file-emitter` | Implementing a custom `FileEmitter` for boost-core | `boost-extension` |
 
-The `readme`, `release-notes`, and `upgrading` skills moved to [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) under the `release-automation` tag. See [UPGRADING](UPGRADING.md) for the migration note.
+The `readme`, `release-notes`, and `upgrading` skills ship from [`sandermuller/boost-skills`](https://github.com/sandermuller/boost-skills) under the `release-automation` tag. See [UPGRADING](UPGRADING.md) for that migration.
 
 ## Install
 
 ```bash
 composer require --dev sandermuller/package-boost-php
-```
-
-PHP 8.3+ required. `sandermuller/boost-core` (the sync engine) and `stolt/lean-package-validator` (the `lean` command's checker) come in transitively — do not `require sandermuller/boost-core` separately, it resolves through this package. One package is the whole install; the auto-sync callback (below) lives under this package's own namespace so your `composer.json` never names the transitive dependency.
-
-## First run
-
-```bash
-vendor/bin/boost install              # interactive: pick agents, allowlist vendors (writes boost.php)
-vendor/bin/boost sync                 # fan out skills + guidelines to selected agents
-vendor/bin/package-boost-php gitattributes   # write or refresh the managed .gitattributes block
+vendor/bin/boost install                     # pick agents and allowlist vendors
+vendor/bin/boost sync                        # fan skills + guidelines out
+vendor/bin/package-boost-php gitattributes   # write the managed block
 vendor/bin/package-boost-php lean            # confirm the archive is lean
 ```
 
-Generated agent dirs (`.claude/`, `.cursor/`, `.codex/`, etc.) are added to `.gitignore` automatically; root-level agent files (`AGENTS.md`, `CLAUDE.md`) are tracked, not gitignored, per boost-core's tracking model. Edit `.ai/` only, then re-run `vendor/bin/boost sync`.
+PHP 8.3+. `sandermuller/boost-core` and `stolt/lean-package-validator` come in transitively — do not require them separately. The auto-sync callback lives under this package's own namespace, so your `composer.json` never names the engine.
 
-## `boost.php` config
-
-The canonical example is this repo's own dogfood config (kept at `.config/boost.php`; root `boost.php` works too):
-
-```php
-<?php declare(strict_types=1);
-
-use SanderMuller\BoostCore\Config\BoostConfig;
-use SanderMuller\BoostCore\Enums\Agent;
-use SanderMuller\BoostCore\Enums\Tag;
-
-return BoostConfig::configure()
-    ->withAgents([
-        Agent::CLAUDE_CODE,
-        Agent::COPILOT,
-        Agent::CODEX,
-    ])
-    ->withAllowedVendors([
-        'sandermuller/boost-core',
-        'sandermuller/boost-skills',
-        'sandermuller/package-boost-php',
-        'stolt/lean-package-validator',
-    ])
-    ->withTags([
-        Tag::Php,
-        Tag::Github,
-        'release-automation',
-        'boost-extension',
-    ]);
-```
-
-The absolute minimum to boot is one agent + this package in the allowlist:
+The minimum `boost.php` is one agent plus this package in the allowlist:
 
 ```php
 return BoostConfig::configure()
@@ -106,39 +66,20 @@ return BoostConfig::configure()
     ->withAllowedVendors(['sandermuller/package-boost-php']);
 ```
 
-Full configuration reference lives in [`sandermuller/boost-core`'s README](https://github.com/sandermuller/boost-core).
+Two opt-in tags: `release-automation` and `boost-extension`. Neither ships until you declare it.
 
-## Opt-in tags
+## Documentation
 
-`withTags(...)` filters which skills and guidelines sync. The two opt-ins this package recognises:
+| Topic | Page |
+|---|---|
+| What this package ships | [Overview](https://sandermuller.github.io/boost-core/packages/package-boost-php/) |
+| Install and first run | [Install](https://sandermuller.github.io/boost-core/packages/package-boost-php/install) |
+| `boost.php`, the opt-in tags, auto-sync, coexistence | [Configuration](https://sandermuller.github.io/boost-core/packages/package-boost-php/configuration) |
+| Publishing your own skill package | [Publishing a skill package](https://sandermuller.github.io/boost-core/packages/boost-core/publishing-skills) |
+| Tags, skill dependencies, remote skills, conventions | [Guide](https://sandermuller.github.io/boost-core/guide/what-is-boost) |
+| Every command and exit code | [CLI reference](https://sandermuller.github.io/boost-core/reference/cli) |
 
-- `'release-automation'` — pulls this package's `release-automation` guideline (stays local), and (when `sandermuller/boost-skills` is allowlisted) the migrated `readme` / `release-notes` / `upgrading` skills from boost-skills.
-- `'boost-extension'` — pulls `skill-authoring` + `writing-file-emitter` for consumers extending the boost ecosystem.
-
-The tag *mechanism* (`withTags()`, `metadata.boost-tags`, subset-rule semantics) is documented in `boost-core`. Tag *vocabulary* is illustrative per catalog — boost-skills publishes [a worked example](https://github.com/sandermuller/boost-skills#tags); other catalogs may organise differently.
-
-## Coexistence
-
-The Laravel-package sibling [`sandermuller/package-boost-laravel`](https://github.com/sandermuller/package-boost-laravel) requires this package and layers Laravel-specific skills (Testbench, cross-version-Laravel, CI matrix) and `McpJsonEmitter` on top. Both packages coexist cleanly with [`laravel/boost`](https://github.com/laravel/boost) in Laravel-package projects — they handle disjoint concerns: this package is dev-time package authorship; `laravel/boost` is install-time MCP for downstream Laravel apps.
-
-## Auto-sync
-
-To re-sync on every `composer install` / `composer update`, wire the callback into your project's `composer.json`:
-
-```json
-"scripts": {
-    "post-install-cmd": ["SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"],
-    "post-update-cmd": ["SanderMuller\\PackageBoostPhp\\Scripts\\AutoSync::run"]
-}
-```
-
-The callback lives under this package's own namespace, so you reference only `package-boost-php` and never need to `require sandermuller/boost-core` separately — one package is the whole install. `AutoSync::run` delegates to boost-core's engine and inherits every guard unchanged (it's silent on a no-op install, skips on `--no-dev`, and honours `BOOST_SKIP_AUTOSYNC`). For a script you invoke yourself (e.g. `composer sync-ai`) where silence reads as nothing happening, use `SanderMuller\PackageBoostPhp\Scripts\AutoSync::runWithSummary` instead — it always prints the one-line summary.
-
-`BOOST_SKIP_AUTOSYNC=1` disables the callback.
-
-## Public API
-
-The semver-protected surface — the `AutoSync` composer-hook façade, the `bin/package-boost-php` CLI contract, and the managed-block marker format — is documented in [PUBLIC_API.md](PUBLIC_API.md). Everything else is `@internal`.
+The semver-protected surface — the `AutoSync` Composer-hook façade, the `bin/package-boost-php` CLI contract, and the managed-block marker format — is in [PUBLIC_API.md](PUBLIC_API.md). Everything else is `@internal`.
 
 ## Testing
 
